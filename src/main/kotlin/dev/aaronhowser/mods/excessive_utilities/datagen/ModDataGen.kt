@@ -1,7 +1,9 @@
 package dev.aaronhowser.mods.excessive_utilities.datagen
 
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.ModDatapackBuiltinEntriesProvider
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.ModDamageTypeProvider
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.ModDimensionProvider
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.ModEnchantmentProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModLanguageProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.loot.ModGlobalLootModifierProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.loot.ModLootTableProvider
@@ -9,28 +11,35 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.model.ModBlockStateProvi
 import dev.aaronhowser.mods.excessive_utilities.datagen.model.ModItemModelProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.recipe.ModRecipeProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.*
-import net.minecraft.core.HolderLookup
-import net.minecraft.data.DataGenerator
-import net.minecraft.data.PackOutput
+import net.minecraft.core.RegistrySetBuilder
+import net.minecraft.core.registries.Registries
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
-import net.neoforged.neoforge.common.data.ExistingFileHelper
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider
 import net.neoforged.neoforge.data.event.GatherDataEvent
-import java.util.concurrent.CompletableFuture
 
 @EventBusSubscriber(modid = ExcessiveUtilities.MOD_ID)
 object ModDataGen {
 
 	@SubscribeEvent
 	fun onGatherData(event: GatherDataEvent) {
-		val generator: DataGenerator = event.generator
-		val output: PackOutput = generator.packOutput
-		val existingFileHelper: ExistingFileHelper = event.existingFileHelper
-		val lookupProvider: CompletableFuture<HolderLookup.Provider> = event.lookupProvider
+		val generator = event.generator
+		val output = generator.packOutput
+		val existingFileHelper = event.existingFileHelper
+		val lookupProvider = event.lookupProvider
 
 		val datapackRegistrySets = generator.addProvider(
 			event.includeServer(),
-			ModDatapackBuiltinEntriesProvider(output, lookupProvider)
+			DatapackBuiltinEntriesProvider(
+				output,
+				lookupProvider,
+				RegistrySetBuilder()
+					.add(Registries.DAMAGE_TYPE, ModDamageTypeProvider::bootstrap)
+					.add(Registries.ENCHANTMENT, ModEnchantmentProvider::bootstrap)
+					.add(Registries.LEVEL_STEM, ModDimensionProvider::bootstrapLevelStem)
+					.add(Registries.DIMENSION_TYPE, ModDimensionProvider::bootstrapType),
+				setOf(ExcessiveUtilities.MOD_ID)
+			)
 		)
 
 		val lookupWithDatapack = datapackRegistrySets.registryProvider
