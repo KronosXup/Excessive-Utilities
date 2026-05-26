@@ -109,7 +109,7 @@ class FluidBar(
 	}
 
 	companion object {
-		const val WIDTH = 18
-		const val HEIGHT = 57
+		const val WIDTH = 14
+		const val HEIGHT = 29
 	}
 }

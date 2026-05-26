@@ -34,8 +34,8 @@ class SingleFluidGeneratorScreen(
 		)
 
 		fluidBar = FluidBar(
-			x = leftPos + 44,
-			y = topPos + 18,
+			x = leftPos + 69,
+			y = topPos + 40,
 			capacityGetter = { menu.blockEntity?.tank?.capacity ?: 0 },
 			fluidGetter = { menu.blockEntity?.tank?.fluid ?: FluidStack.EMPTY },
 			font = font
