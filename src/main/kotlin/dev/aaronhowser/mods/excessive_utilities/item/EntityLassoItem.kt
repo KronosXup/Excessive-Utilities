@@ -10,6 +10,7 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMessageLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModEntityTypeTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import net.minecraft.core.registries.Registries
+import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.monster.Enemy
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.CustomData
 import net.minecraft.world.item.context.UseOnContext
 import net.minecraft.world.level.Level
@@ -117,6 +119,41 @@ class EntityLassoItem(
 		stack.remove(ModDataComponents.ENTITY_TYPE)
 
 		return InteractionResult.SUCCESS
+	}
+
+	override fun appendHoverText(
+		stack: ItemStack,
+		context: TooltipContext,
+		tooltipComponents: MutableList<Component>,
+		tooltipFlag: TooltipFlag
+	) {
+		val entityType = stack.get(ModDataComponents.ENTITY_TYPE) ?: return
+		val typeName = entityType.value().description
+
+		val entityData = stack.get(ModDataComponents.ENTITY_DATA)
+
+		if (entityData == null) {
+			tooltipComponents += typeName
+			return
+		}
+
+		val registries = context.registries() ?: return
+
+		val customName = Component.Serializer.fromJson(
+			entityData.copyTag().getString("CustomName"),
+			registries
+		)
+
+		if (customName == null) {
+			tooltipComponents += typeName
+			return
+		}
+
+		tooltipComponents += customName
+			.copy()
+			.append(" (")
+			.append(typeName)
+			.append(")")
 	}
 
 	companion object {
