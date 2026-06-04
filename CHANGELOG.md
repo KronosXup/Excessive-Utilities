@@ -3,6 +3,7 @@
 ### Fixed
 
 - Accepted a PR from Saereth that fixes the Enchantment Generator not working (#14, #18)
+- Fixed the later tiers of Opinium Core being super broken in JEI (#23)
 
 ### Changed
 

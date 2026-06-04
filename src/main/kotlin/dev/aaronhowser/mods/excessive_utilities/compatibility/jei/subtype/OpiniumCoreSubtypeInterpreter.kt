@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack
 object OpiniumCoreSubtypeInterpreter : ISubtypeInterpreter<ItemStack> {
 
 	override fun getSubtypeData(ingredient: ItemStack, context: UidContext): Any? {
-		return ingredient.get(ModDataComponents.OPINIUM_CORE_CONTENTS)
+		return ingredient.get(ModDataComponents.OPINIUM_CORE_CONTENTS)?.name
 	}
 
 	@Deprecated("Deprecated in Java")
