@@ -22,10 +22,8 @@ class SnowGlobeRecipe(
 		for (inputStack in input.items()) {
 			if (!inputStack.isItem(ModItems.MAGICAL_SNOW_GLOBE)) continue
 
-			val component = inputStack.getOrDefault(
-				ModDataComponents.MAGICAL_SNOW_GLOBE_PROGRESS,
-				MagicalSnowGlobeProgressComponent.DEFAULT
-			)
+			val component = inputStack.get(ModDataComponents.MAGICAL_SNOW_GLOBE_PROGRESS)
+				?: return false
 
 			if (!component.isComplete) return false
 		}

@@ -1236,12 +1236,7 @@ class ModRecipeProvider(
 			.pattern("ESE", "SGS", "ESE")
 			.define('E', Tags.Items.END_STONES.asIngredient())
 			.define('S', ModBlocks.STONEBURNT.asIngredient())
-			.define(
-				'G', ModBlocks.MAGICAL_SNOW_GLOBE.asIngredient(
-					ModDataComponents.MAGICAL_SNOW_GLOBE_PROGRESS.get(),
-					MagicalSnowGlobeProgressComponent.DEFAULT_COMPLETED
-				)
-			)
+			.define('G', ModBlocks.MAGICAL_SNOW_GLOBE.asIngredient())
 			.save(recipeOutput)
 
 		shapedRecipe(

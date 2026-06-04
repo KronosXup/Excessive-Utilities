@@ -6,6 +6,7 @@
 - Fixed the later tiers of Opinium Core being super broken in JEI (#23)
 - Added `doggytalents:dog` to the Lasso blacklist (#24)
 - Lassos now say what entity is held in them (#22)
+- Fixed Magical Snow Globe recipes requiring that all the biomes be visited instead of just 7 (#15)
 
 ### Changed
 
