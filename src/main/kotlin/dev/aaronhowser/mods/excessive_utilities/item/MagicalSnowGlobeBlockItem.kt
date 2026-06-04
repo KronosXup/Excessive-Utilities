@@ -55,24 +55,24 @@ class MagicalSnowGlobeBlockItem(properties: Properties) : BlockItem(ModBlocks.MA
 
 		if (progress.isComplete) {
 			tooltipComponents += ModMenuLang.SNOW_GLOBE_READY.toGrayComponent()
-		} else {
-			tooltipComponents += ModMenuLang.SNOW_GLOBE_INSTRUCTIONS.toGrayComponent(progress.amountRequired)
-
-			for ((biomeTag, found) in progress.biomes) {
-				val name = ModMenuLang.biomeTagLangKey(biomeTag).toComponent()
-
-				if (found) {
-					name.withStyle(Style.EMPTY.withColor(ChatFormatting.DARK_BLUE).withStrikethrough(true))
-				} else {
-					name.withStyle(Style.EMPTY.withColor(ChatFormatting.BLUE))
-				}
-
-				val component = Component.literal("- ").append(name)
-
-				tooltipComponents += component
-			}
+			return
 		}
 
+		tooltipComponents += ModMenuLang.SNOW_GLOBE_INSTRUCTIONS.toGrayComponent(progress.amountRequired)
+
+		for ((biomeTag, found) in progress.biomes) {
+			val name = ModMenuLang.biomeTagLangKey(biomeTag).toComponent()
+
+			if (found) {
+				name.withStyle(Style.EMPTY.withColor(ChatFormatting.DARK_BLUE).withStrikethrough(true))
+			} else {
+				name.withStyle(Style.EMPTY.withColor(ChatFormatting.BLUE))
+			}
+
+			val component = Component.literal("- ").append(name)
+
+			tooltipComponents += component
+		}
 	}
 
 	companion object {
