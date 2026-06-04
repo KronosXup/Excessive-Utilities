@@ -25,7 +25,7 @@ class UpdateGridPowerPacket(
 
 	companion object {
 		val TYPE: CustomPacketPayload.Type<UpdateGridPowerPacket> =
-			CustomPacketPayload.Type(ExcessiveUtilities.modResource("update_grid_power"))
+			makeType(ExcessiveUtilities.MOD_ID, "update_grid_power")
 
 		val STREAM_CODEC: StreamCodec<ByteBuf, UpdateGridPowerPacket> =
 			StreamCodec.composite(

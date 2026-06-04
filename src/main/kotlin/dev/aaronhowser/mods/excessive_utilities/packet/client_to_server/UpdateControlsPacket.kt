@@ -23,7 +23,7 @@ class UpdateControlsPacket(
 
 	companion object {
 		val TYPE: CustomPacketPayload.Type<UpdateControlsPacket> =
-			CustomPacketPayload.Type(ExcessiveUtilities.modResource("update_controls_packet"))
+			makeType(ExcessiveUtilities.MOD_ID, "update_controls")
 
 		val STREAM_CODEC: StreamCodec<ByteBuf, UpdateControlsPacket> =
 			ByteBufCodecs.BOOL.map(

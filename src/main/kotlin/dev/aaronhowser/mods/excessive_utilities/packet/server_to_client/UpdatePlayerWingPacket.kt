@@ -35,7 +35,7 @@ class UpdatePlayerWingPacket(
 
 	companion object {
 		val TYPE: CustomPacketPayload.Type<UpdatePlayerWingPacket> =
-			CustomPacketPayload.Type(ExcessiveUtilities.modResource("update_player_wing"))
+			makeType(ExcessiveUtilities.MOD_ID, "update_player_wing")
 
 		val STREAM_CODEC: StreamCodec<ByteBuf, UpdatePlayerWingPacket> =
 			StreamCodec.composite(
