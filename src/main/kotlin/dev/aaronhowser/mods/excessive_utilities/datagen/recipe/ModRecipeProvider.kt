@@ -106,7 +106,8 @@ class ModRecipeProvider(
 			val inputComponent = cores[i - 1]
 			val outputComponent = core
 
-			val (inner, outer) = core
+			val center = core.getCenter()
+			val outer = core.getOuter()
 
 			shapedRecipe(
 				outputComponent.getStack(),
@@ -114,7 +115,7 @@ class ModRecipeProvider(
 				mapOf(
 					'O' to ingredient(inputComponent),
 					'A' to outer.asIngredient(),
-					'B' to inner.asIngredient()
+					'B' to center.asIngredient()
 				)
 			).save(recipeOutput, modLoc(recipeName))
 		}

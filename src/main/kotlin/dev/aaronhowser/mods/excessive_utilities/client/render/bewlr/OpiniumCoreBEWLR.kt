@@ -29,12 +29,13 @@ class OpiniumCoreBEWLR : BlockEntityWithoutLevelRenderer(
 	) {
 		val component = stack.get(ModDataComponents.OPINIUM_CORE_CONTENTS) ?: return
 
-		val (inner, outer) = component
+		val center = component.getCenter()
+		val outer = component.getOuter()
 
 		val gameTime = AaronClientUtil.localLevel?.gameTime ?: 0
 		val time = gameTime + Minecraft.getInstance().timer.gameTimeDeltaTicks
 
-		renderInner(inner, poseStack, buffer, displayContext, packedLight, packedOverlay, time)
+		renderInner(center, poseStack, buffer, displayContext, packedLight, packedOverlay, time)
 		renderOuters(outer, poseStack, buffer, displayContext, packedLight, packedOverlay, time)
 	}
 

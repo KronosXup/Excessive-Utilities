@@ -16,12 +16,16 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 
 data class OpiniumCoreContentsComponent(
-	val center: ItemStack,
-	val outer: ItemStack,
+	private val center: ItemStack,
+	private val outer: ItemStack,
 	val name: Component
 ) {
 
-	fun getStack(): ItemStack = ModItems.OPINIUM_CORE.withComponent(ModDataComponents.OPINIUM_CORE_CONTENTS.get(), this)
+	fun getStack(): ItemStack = ModItems.OPINIUM_CORE
+		.withComponent(ModDataComponents.OPINIUM_CORE_CONTENTS.get(), this)
+
+	fun getCenter(): ItemStack = center.copy()
+	fun getOuter(): ItemStack = outer.copy()
 
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true
