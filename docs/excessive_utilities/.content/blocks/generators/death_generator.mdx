@@ -1,0 +1,28 @@
+---
+title: Death Generator
+id: excessive_utilities:death_generator
+related_items: [excessive_utilities:death_generator]
+type: block
+---
+
+The **Death Generator** burns certain death-related items to produce FE.
+
+While active, the Death Generator will emit particles in a configurable radius around itself. Any entity inside that radius will be given the [Doom](@excessive_utilities:doom) effect, which will kill them in 60 seconds if not cured.
+
+## Configuration
+
+The Death Generator uses the `excessive_utilities:single_item_fuel` recipe type. Use this as an example:
+
+```json
+{
+  "type": "excessive_utilities:single_item_fuel",
+  "duration": 400,
+  "fe_per_tick": 150,
+  "generator_type": "death",
+  "ingredient": {
+    "tag": "c:storage_blocks/bone_meal"
+  }
+}
+```
+
+<PrefabObtaining/>
