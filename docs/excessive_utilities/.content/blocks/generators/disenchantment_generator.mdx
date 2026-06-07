@@ -1,0 +1,42 @@
+---
+title: Disenchantment Generator
+id: excessive_utilities:disenchantment_generator
+related_items: [excessive_utilities:disenchantment_generator]
+type: block
+---
+
+The **Disenchantment Generator** destroys enchanted items to generate FE.
+
+Stronger enchantments will generate more FE, using the formulas:
+
+```kt
+		fun getPowerFromStack(itemStack: ItemStack): Int {
+			val enchantments = EnchantmentHelper.getEnchantmentsForCrafting(itemStack)
+
+			var totalPower = 0
+
+			for ((enchantment, enchantLevel) in enchantments.entrySet()) {
+				totalPower += getPowerFromEnchantment(enchantment.value(), enchantLevel)
+			}
+
+			return totalPower
+		}
+
+		fun getPowerFromEnchantment(enchantment: Enchantment, level: Int): Int {
+			val minLevel = enchantment.minLevel
+			val maxLevel = enchantment.maxLevel
+			val weight = enchantment.weight
+
+			val a = sqrt(min(level + 1, maxLevel) / maxLevel.toDouble())
+			val b = (maxLevel * maxLevel) * (level + 1)
+			val c = minLevel / sqrt(weight.toDouble())
+
+			return Mth.ceil(a * b * c) * 400
+		}
+```
+
+## Configuration
+
+The Disenchantment Generator can currently not be configured.
+
+<PrefabObtaining/>

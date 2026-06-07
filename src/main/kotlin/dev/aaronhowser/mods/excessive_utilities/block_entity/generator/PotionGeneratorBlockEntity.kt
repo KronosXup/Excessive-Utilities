@@ -31,7 +31,10 @@ class PotionGeneratorBlockEntity(
 		val inputStack = container.getItem(GeneratorContainer.INPUT_SLOT)
 		if (inputStack.isEmpty) return false
 
-		val potion = inputStack.get(DataComponents.POTION_CONTENTS)?.potion?.getOrNull() ?: return false
+		val potion = inputStack.get(DataComponents.POTION_CONTENTS)
+			?.potion
+			?.getOrNull()
+			?: return false
 
 		if (potion.isHolder(Potions.WATER)) {
 			burnTimeRemaining = 10
@@ -53,6 +56,7 @@ class PotionGeneratorBlockEntity(
 	}
 
 	companion object {
+
 		fun getPowerFromPotion(level: Level, itemStack: ItemStack): Int {
 			val potion = itemStack.get(DataComponents.POTION_CONTENTS)
 				?.potion

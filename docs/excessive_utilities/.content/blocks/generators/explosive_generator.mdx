@@ -1,0 +1,26 @@
+---
+title: Explosive Generator
+id: excessive_utilities:explosive_generator
+related_items: [excessive_utilities:explosive_generator]
+type: block
+---
+
+The **Explosive Generator** burns certain explosive items to produce FE.
+
+## Configuration
+
+The Explosive Generator uses the `excessive_utilities:single_item_fuel` recipe type. Use this as an example:
+
+```json
+{
+  "type": "excessive_utilities:single_item_fuel",
+  "duration": 3200,
+  "fe_per_tick": 160,
+  "generator_type": "explosive",
+  "ingredient": {
+    "item": "minecraft:tnt"
+  }
+}
+```
+
+<PrefabObtaining/>
