@@ -13,6 +13,7 @@ import dev.aaronhowser.mods.excessive_utilities.block.CrusherBlock
 import dev.aaronhowser.mods.excessive_utilities.block_entity.base.GpDrainBlockEntity
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.item.SpeedUpgradeItem
+import dev.aaronhowser.mods.excessive_utilities.menu.crusher.CrusherMenu
 import dev.aaronhowser.mods.excessive_utilities.recipe.machine.CrusherRecipe
 import dev.aaronhowser.mods.excessive_utilities.registry.ModBlockEntityTypes
 import net.minecraft.core.BlockPos
@@ -202,9 +203,8 @@ class CrusherBlockEntity(
 
 	override fun getDisplayName(): Component = blockState.block.name
 
-	//TODO: Need a menu
-	override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): AbstractContainerMenu? {
-		return null
+	override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): AbstractContainerMenu {
+		return CrusherMenu(containerId, playerInventory, container, containerData)
 	}
 
 	private val containerData: ContainerData =
@@ -216,7 +216,7 @@ class CrusherBlockEntity(
 					CURRENT_ENERGY_DATA_INDEX -> energyStorage.energyStored
 					MAX_ENERGY_DATA_INDEX -> energyStorage.maxEnergyStored
 					PROGRESS_DATA_INDEX -> progress
-					MAX_PROGRESS_DATA_INDEX -> 200 // TODO: Configurable
+					MAX_PROGRESS_DATA_INDEX -> maxProgress
 					else -> 0
 				}
 			}

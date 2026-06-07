@@ -1,0 +1,51 @@
+package dev.aaronhowser.mods.excessive_utilities.menu.crusher
+
+import dev.aaronhowser.mods.aaron.menu.BaseScreen
+import dev.aaronhowser.mods.aaron.menu.textures.ScreenBackground
+import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
+import dev.aaronhowser.mods.excessive_utilities.menu.components.EnergyBar
+import dev.aaronhowser.mods.excessive_utilities.menu.components.ProgressArrow
+import dev.aaronhowser.mods.excessive_utilities.menu.simple_machine.SimpleMachineMenu
+import net.minecraft.network.chat.Component
+import net.minecraft.world.entity.player.Inventory
+
+class CrusherScreen(
+	menu: SimpleMachineMenu,
+	playerInventory: Inventory,
+	title: Component
+) : BaseScreen<SimpleMachineMenu>(menu, playerInventory, title) {
+
+	override val background: ScreenBackground = BACKGROUND
+	override val inventoryLabelOffsetY: Int = 12
+
+	private lateinit var energyBar: EnergyBar
+	private lateinit var progressArrow: ProgressArrow
+
+	override fun baseInit() {
+		super.baseInit()
+
+		energyBar = EnergyBar(
+			x = leftPos + 7,
+			y = topPos + 21,
+			maxGetter = menu::getMaxEnergy,
+			currentGetter = menu::getCurrentEnergy,
+			font = font
+		)
+
+		progressArrow = ProgressArrow(
+			x = leftPos + 84,
+			y = topPos + 41,
+			font = font,
+			percentDoneFunction = { menu.getProgress().toFloat() / menu.getMaxProgress() },
+			shouldRenderProgress = { menu.getProgress() > 0 }
+		)
+
+		addRenderableWidget(energyBar)
+		addRenderableWidget(progressArrow)
+	}
+
+	companion object {
+		val BACKGROUND = ScreenBackground(ExcessiveUtilities.modResource("textures/gui/crusher.png"), 176, 180)
+	}
+
+}
