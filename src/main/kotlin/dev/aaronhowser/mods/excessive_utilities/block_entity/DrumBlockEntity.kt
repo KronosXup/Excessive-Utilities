@@ -1,6 +1,7 @@
 package dev.aaronhowser.mods.excessive_utilities.block_entity
 
 import dev.aaronhowser.mods.aaron.block_entity.SyncingBlockEntity
+import dev.aaronhowser.mods.aaron.client.AaronClientUtil
 import dev.aaronhowser.mods.excessive_utilities.block_entity.base.ConfigurableFluidTank
 import dev.aaronhowser.mods.excessive_utilities.config.ServerConfig
 import dev.aaronhowser.mods.excessive_utilities.registry.ModBlockEntityTypes
@@ -70,8 +71,6 @@ class DrumBlockEntity(
 	}
 
 	companion object {
-		private val FLUID_COLORS: MutableMap<Fluid, Int> = mutableMapOf()
-
 		fun getFluidCapability(blockEntity: DrumBlockEntity, direction: Direction?): IFluidHandler {
 			return blockEntity.tank
 		}
@@ -89,77 +88,7 @@ class DrumBlockEntity(
 
 			val fluid = blockEntity.tank.fluid
 			if (fluid.isEmpty) return 0xFFFFFFFF.toInt()
-			return getFluidColor(fluid.fluid)
-		}
-
-		private fun getFluidColor(fluid: Fluid): Int {
-			val existing = FLUID_COLORS[fluid]
-			if (existing != null) return existing
-
-			val newColor = computeFluidColor(fluid)
-			FLUID_COLORS[fluid] = newColor
-			return newColor
-		}
-
-		private fun computeFluidColor(fluid: Fluid): Int {
-			val ext = IClientFluidTypeExtensions.of(fluid)
-			val tintColor = ext.tintColor
-			if (tintColor != 0xFFFFFFFF.toInt()) {
-				return tintColor
-			}
-
-			val textureLocation = ext.stillTexture
-			val atlasTexture = Minecraft.getInstance()
-				.getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-				.apply(textureLocation)
-
-			if (atlasTexture == null) {
-				return 0xFFFFFFFF.toInt()
-			}
-
-			val pixels = buildList {
-				val contents = atlasTexture.contents()
-				val width = contents.width()
-				val height = contents.height()
-				val nativeImage = contents.originalImage
-
-				for (x in 0 until width) {
-					for (y in 0 until height) {
-						// Apparently getPixelRGBA actually returns ABGR??
-						val abgr = nativeImage.getPixelRGBA(x, y)
-						val alpha = abgr ushr 24 and 0xFF
-						if (alpha > 10) {
-							add(abgr)
-						}
-					}
-				}
-			}
-
-			if (pixels.isEmpty()) {
-				return 0xFFFFFFFF.toInt()
-			}
-
-			var totalRed = 0L
-			var totalGreen = 0L
-			var totalBlue = 0L
-
-			for (abgr in pixels) {
-				val blue  = abgr ushr 16 and 0xFF
-				val green = abgr ushr 8  and 0xFF
-				val red   = abgr         and 0xFF
-
-				totalRed   += red
-				totalGreen += green
-				totalBlue  += blue
-			}
-
-			val count = pixels.size
-			val averageRed   = (totalRed   / count).toInt()
-			val averageGreen = (totalGreen / count).toInt()
-			val averageBlue  = (totalBlue  / count).toInt()
-
-			val argb = (0xFF shl 24) or (averageRed shl 16) or (averageGreen shl 8) or averageBlue
-			return argb
+			return AaronClientUtil.getFluidColor(fluid.fluid)
 		}
 
 		fun getItemStackColor(
@@ -169,7 +98,7 @@ class DrumBlockEntity(
 			val content = itemStack.get(ModDataComponents.TANK) ?: return 0xFFFFFFFF.toInt()
 			if (content.isEmpty) return 0xFFFFFFFF.toInt()
 
-			return getFluidColor(content.fluid)
+			return AaronClientUtil.getFluidColor(content.fluid)
 		}
 	}
 
