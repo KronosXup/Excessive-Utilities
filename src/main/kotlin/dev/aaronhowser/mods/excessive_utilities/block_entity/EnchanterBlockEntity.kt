@@ -29,6 +29,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ContainerData
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.EnchantingTableBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.energy.EnergyStorage
 import net.neoforged.neoforge.energy.IEnergyStorage
@@ -86,8 +88,14 @@ class EnchanterBlockEntity(
 
 	private var maxProgress: Int = 0
 
+	private var currentEnchantingPower: Float = 0f
+
 	override fun serverTick(level: ServerLevel) {
 		super.serverTick(level)
+
+		if (level.gameTime % 20 == 0L) {
+			currentEnchantingPower = getCurrentEnchantingLevel(level)
+		}
 
 		val recipe = getRecipe()?.value
 		if (recipe == null) {
@@ -190,6 +198,23 @@ class EnchanterBlockEntity(
 		}
 
 		return recipe
+	}
+
+	fun getCurrentEnchantingLevel(level: Level): Float {
+		var i = 0f
+
+		for (offset in EnchantingTableBlock.BOOKSHELF_OFFSETS) {
+			val valid = EnchantingTableBlock.isValidBookShelf(level, blockPos, offset)
+			if (!valid) continue
+
+			val offsetPos = blockPos.offset(offset)
+			val state = level.getBlockState(offsetPos)
+			val power = state.getEnchantPowerBonus(level, offsetPos)
+
+			i += power
+		}
+
+		return i
 	}
 
 	private val containerData: ContainerData =
