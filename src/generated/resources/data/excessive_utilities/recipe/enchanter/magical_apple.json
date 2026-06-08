@@ -2,16 +2,20 @@
   "type": "excessive_utilities:enchanter",
   "fe_per_tick": 10,
   "left": {
-    "item": "minecraft:apple"
+    "count": 16,
+    "ingredient": {
+      "item": "minecraft:apple"
+    }
   },
-  "left_count": 16,
   "output": {
     "count": 16,
     "id": "excessive_utilities:magical_apple"
   },
   "right": {
-    "tag": "c:gems/lapis"
+    "count": 1,
+    "ingredient": {
+      "tag": "c:gems/lapis"
+    }
   },
-  "right_count": 1,
   "ticks": 1600
 }

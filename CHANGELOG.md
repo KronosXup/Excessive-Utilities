@@ -12,6 +12,7 @@
 - Crusher recipes now have more options:
 	- `ticks` for how many ticks the recipe takes (default 200)
 	- `fe_per_tick` for how much FE the recipe consumes per tick (default 20)
+- Enchanter recipes now use a SizedIngredient instead of an Ingredient and count
 
 # 1.4.0
 

@@ -8,23 +8,70 @@ import net.minecraft.advancements.critereon.RecipeUnlockedTrigger
 import net.minecraft.data.recipes.RecipeBuilder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.util.Mth
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.common.crafting.SizedIngredient
+import kotlin.time.toDuration
 
 class EnchanterRecipeBuilder(
-	val leftIngredient: Ingredient,
-	val leftCount: Int,
-	val rightIngredient: Ingredient,
-	val rightCount: Int,
-	val fePerTick: Int,
-	val ticks: Int,
-	val enchantingPower: Float,
-	val result: ItemStack,
+	private val result: ItemStack
 ) : RecipeBuilder {
 
+	private var leftIngredient: Ingredient? = null
+	private var leftCount: Int? = null
+	private var rightIngredient: Ingredient? = null
+	private var rightCount: Int? = null
+	private var fePerTick: Int? = null
+	private var ticks: Int? = null
+	private var enchantingPower: Float = 15f
+
 	private val criteria: MutableMap<String, Criterion<*>> = mutableMapOf()
+
+	fun left(
+		ingredient: Ingredient,
+		count: Int = 1
+	): EnchanterRecipeBuilder {
+		leftIngredient = ingredient
+		leftCount = count
+
+		return this
+	}
+
+	fun right(
+		ingredient: Ingredient,
+		count: Int = 1
+	): EnchanterRecipeBuilder {
+		rightIngredient = ingredient
+		rightCount = count
+
+		return this
+	}
+
+	fun fePerTick(fePerTick: Int): EnchanterRecipeBuilder {
+		this.fePerTick = fePerTick
+		return this
+	}
+
+	fun ticks(ticks: Int): EnchanterRecipeBuilder {
+		this.ticks = ticks
+		return this
+	}
+
+	fun enchantingPower(enchantingPower: Float): EnchanterRecipeBuilder {
+		this.enchantingPower = enchantingPower
+		return this
+	}
+
+	fun costAndDuration(
+		feCost: Int,
+		durationTicks: Int
+	): EnchanterRecipeBuilder {
+		this.fePerTick = Mth.ceil(feCost / durationTicks.toDouble())
+		this.ticks = durationTicks
+		return this
+	}
 
 	override fun unlockedBy(name: String, criterion: Criterion<*>): RecipeBuilder {
 		criteria[name] = criterion
@@ -60,10 +107,10 @@ class EnchanterRecipeBuilder(
 		}
 
 		val recipe = EnchanterRecipe(
-			SizedIngredient(leftIngredient, leftCount),
-			SizedIngredient(rightIngredient, rightCount),
-			fePerTick,
-			ticks,
+			SizedIngredient(leftIngredient!!, leftCount!!),
+			SizedIngredient(rightIngredient!!, rightCount!!),
+			fePerTick!!,
+			ticks!!,
 			enchantingPower,
 			result
 		)

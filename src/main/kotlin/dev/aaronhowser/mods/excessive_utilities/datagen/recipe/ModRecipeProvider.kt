@@ -1926,65 +1926,41 @@ class ModRecipeProvider(
 	}
 
 	private fun buildEnchanterRecipes(recipeOutput: RecipeOutput) {
-		EnchanterRecipeBuilder(
-			Tags.Items.BOOKSHELVES.asIngredient(),
-			1,
-			Tags.Items.GEMS_LAPIS.asIngredient(),
-			1,
-			64_00 / (80 * 20),
-			80 * 20,
-			ModBlocks.MAGICAL_WOOD.toStack()
-		).save(recipeOutput)
+		EnchanterRecipeBuilder(ModBlocks.MAGICAL_WOOD.toStack())
+			.left(Tags.Items.BOOKSHELVES.asIngredient())
+			.right(Tags.Items.GEMS_LAPIS.asIngredient())
+			.costAndDuration(64_00, 80 * 20)
+			.save(recipeOutput)
 
-		EnchanterRecipeBuilder(
-			Tags.Items.STORAGE_BLOCKS_GOLD.asIngredient(),
-			1,
-			Tags.Items.GEMS_LAPIS.asIngredient(),
-			9,
-			24_000 / (20 * 30),
-			20 * 30,
-			ModBlocks.BLOCK_OF_ENCHANTED_METAL.toStack()
-		).save(recipeOutput)
+		EnchanterRecipeBuilder(ModBlocks.BLOCK_OF_ENCHANTED_METAL.toStack())
+			.left(Tags.Items.STORAGE_BLOCKS_GOLD.asIngredient())
+			.right(Tags.Items.GEMS_LAPIS.asIngredient(), 9)
+			.costAndDuration(24_000, 20 * 30)
+			.save(recipeOutput)
 
-		EnchanterRecipeBuilder(
-			Tags.Items.INGOTS_GOLD.asIngredient(),
-			1,
-			Tags.Items.GEMS_LAPIS.asIngredient(),
-			1,
-			8_000 / (20 * 10),
-			20 * 10,
-			ModItems.ENCHANTED_INGOT.toStack()
-		).save(recipeOutput)
+		EnchanterRecipeBuilder(ModItems.ENCHANTED_INGOT.toStack())
+			.left(Tags.Items.INGOTS_GOLD.asIngredient())
+			.right(Tags.Items.GEMS_LAPIS.asIngredient())
+			.costAndDuration(8_000, 20 * 10)
+			.save(recipeOutput)
 
-		EnchanterRecipeBuilder(
-			Tags.Items.STORAGE_BLOCKS_IRON.asIngredient(),
-			8,
-			Items.NETHER_STAR.asIngredient(),
-			1,
-			192_000 / (20 * 240),
-			20 * 240,
-			ModBlocks.BLOCK_OF_EVIL_INFUSED_IRON.toStack(8)
-		).save(recipeOutput)
+		EnchanterRecipeBuilder(ModBlocks.BLOCK_OF_EVIL_INFUSED_IRON.toStack(8))
+			.left(Tags.Items.STORAGE_BLOCKS_IRON.asIngredient(), 8)
+			.right(Items.NETHER_STAR.asIngredient())
+			.costAndDuration(192_000, 20 * 240)
+			.save(recipeOutput)
 
-		EnchanterRecipeBuilder(
-			Tags.Items.INGOTS_IRON.asIngredient(),
-			8,
-			Items.NETHER_STAR.asIngredient(),
-			1,
-			64_000 / (20 * 20),
-			20 * 20,
-			ModItems.EVIL_INFUSED_IRON_INGOT.toStack(8)
-		).save(recipeOutput)
+		EnchanterRecipeBuilder(ModItems.EVIL_INFUSED_IRON_INGOT.toStack(8))
+			.left(Tags.Items.INGOTS_IRON.asIngredient(), 8)
+			.right(Items.NETHER_STAR.asIngredient())
+			.costAndDuration(64_000, 20 * 20)
+			.save(recipeOutput)
 
-		EnchanterRecipeBuilder(
-			Items.APPLE.asIngredient(),
-			16,
-			Tags.Items.GEMS_LAPIS.asIngredient(),
-			1,
-			16_000 / (20 * 80),
-			20 * 80,
-			ModItems.MAGICAL_APPLE.toStack(16)
-		).save(recipeOutput)
+		EnchanterRecipeBuilder(ModItems.MAGICAL_APPLE.toStack(16))
+			.left(Items.APPLE.asIngredient(), 16)
+			.right(Tags.Items.GEMS_LAPIS.asIngredient())
+			.costAndDuration(16_000, 20 * 80)
+			.save(recipeOutput)
 
 	}
 

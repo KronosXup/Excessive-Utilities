@@ -2,16 +2,20 @@
   "type": "excessive_utilities:enchanter",
   "fe_per_tick": 40,
   "left": {
-    "tag": "c:ingots/gold"
+    "count": 1,
+    "ingredient": {
+      "tag": "c:ingots/gold"
+    }
   },
-  "left_count": 1,
   "output": {
     "count": 1,
     "id": "excessive_utilities:enchanted_ingot"
   },
   "right": {
-    "tag": "c:gems/lapis"
+    "count": 1,
+    "ingredient": {
+      "tag": "c:gems/lapis"
+    }
   },
-  "right_count": 1,
   "ticks": 200
 }
