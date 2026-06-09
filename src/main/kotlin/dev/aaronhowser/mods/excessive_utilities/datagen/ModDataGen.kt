@@ -11,10 +11,8 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.model.ModItemModelProvid
 import dev.aaronhowser.mods.excessive_utilities.datagen.recipe.ModRecipeProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.*
 import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModBiomeProvider
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModDensityFunctionProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModDimensionTypeProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModLevelStemProvider
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModNoiseSettingsProvider
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries
 import net.neoforged.bus.api.SubscribeEvent
@@ -43,8 +41,6 @@ object ModDataGen {
 					.add(Registries.LEVEL_STEM, ModLevelStemProvider::bootstrap)
 					.add(Registries.DIMENSION_TYPE, ModDimensionTypeProvider::bootstrap)
 					.add(Registries.BIOME, ModBiomeProvider::bootstrap)
-					.add(Registries.DENSITY_FUNCTION, ModDensityFunctionProvider::bootstrap)
-					.add(Registries.NOISE_SETTINGS, ModNoiseSettingsProvider::bootstrap)
 				,
 				setOf(ExcessiveUtilities.MOD_ID)
 			)

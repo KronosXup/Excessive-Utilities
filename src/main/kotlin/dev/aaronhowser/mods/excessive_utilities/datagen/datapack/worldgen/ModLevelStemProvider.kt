@@ -78,7 +78,7 @@ object ModLevelStemProvider {
 				dimensionTypeLookup.getOrThrow(ModDimensionTypeProvider.DEEP_DARK),
 				NoiseBasedChunkGenerator(
 					FixedBiomeSource(biomeLookup.getOrThrow(ModBiomeProvider.DEEP_DARK)),
-					noiseSettingsLookup.getOrThrow(ModNoiseSettingsProvider.DEEP_DARK)
+					noiseSettingsLookup.getOrThrow(NoiseGeneratorSettings.OVERWORLD)
 				)
 			)
 		)
