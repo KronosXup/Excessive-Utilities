@@ -18,10 +18,6 @@ object ModNoiseSettingsProvider {
 	val DEEP_DARK = rk("deep_dark")
 
 	fun bootstrap(context: BootstrapContext<NoiseGeneratorSettings>) {
-
-		val densityLookup = context.lookup(Registries.DENSITY_FUNCTION)
-		val deepDarkDensity = densityLookup.getOrThrow(ModDensityFunctionsProvider.DEEP_DARK)
-
 		val bottomStone = DensityFunctions.yClampedGradient(
 			0,
 			64,
