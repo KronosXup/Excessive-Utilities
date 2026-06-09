@@ -10,6 +10,8 @@ import net.minecraft.world.level.levelgen.DensityFunctions
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings
 import net.minecraft.world.level.levelgen.NoiseRouter
 import net.minecraft.world.level.levelgen.NoiseSettings
+import net.minecraft.world.level.levelgen.SurfaceRules
+import net.minecraft.world.level.levelgen.VerticalAnchor
 
 object ModNoiseSettingsProvider {
 
@@ -43,7 +45,7 @@ object ModNoiseSettingsProvider {
 					DensityFunctions.zero(),
 					DensityFunctions.zero()
 				),
-				SurfaceRuleData.end(),
+				deepDarkRules(),
 				listOf(),
 				63,
 				false,
@@ -51,6 +53,21 @@ object ModNoiseSettingsProvider {
 				true,
 				false
 			)
+		)
+	}
+
+	private fun deepDarkRules(): SurfaceRules.RuleSource {
+		val bottomLayer = SurfaceRules.yBlockCheck(VerticalAnchor.absolute(64), 0)
+		val topLayer = SurfaceRules.yBlockCheck(VerticalAnchor.absolute(64 + 64), 0)
+
+		val stone = SurfaceRules.state(Blocks.STONE.defaultBlockState())
+		val air = SurfaceRules.state(Blocks.AIR.defaultBlockState())
+
+		return SurfaceRules.sequence(
+			SurfaceRules.ifTrue(
+				bottomLayer,
+				stone
+			),
 		)
 	}
 
