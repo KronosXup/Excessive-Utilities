@@ -41,7 +41,7 @@ object ModDataGen {
 					.add(Registries.DAMAGE_TYPE, ModDamageTypeProvider::bootstrap)
 					.add(Registries.ENCHANTMENT, ModEnchantmentProvider::bootstrap)
 					.add(Registries.DENSITY_FUNCTION, ModDensityFunctionsProvider::bootstrap)
-//					.add(Registries.NOISE_SETTINGS, ModNoiseSettingsProvider::bootstrap)
+					.add(Registries.NOISE_SETTINGS, ModNoiseSettingsProvider::bootstrap)
 					.add(Registries.LEVEL_STEM, ModLevelStemProvider::bootstrap)
 					.add(Registries.DIMENSION_TYPE, ModDimensionTypeProvider::bootstrap)
 					.add(Registries.BIOME, ModBiomeProvider::bootstrap)

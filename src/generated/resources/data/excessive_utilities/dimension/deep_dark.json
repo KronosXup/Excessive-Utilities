@@ -6,6 +6,6 @@
       "type": "minecraft:fixed",
       "biome": "excessive_utilities:deep_dark"
     },
-    "settings": "minecraft:overworld"
+    "settings": "excessive_utilities:deep_dark"
   }
 }
