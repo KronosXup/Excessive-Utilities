@@ -3,6 +3,7 @@ package dev.aaronhowser.mods.excessive_utilities.datagen
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.ModDamageTypeProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.ModEnchantmentProvider
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.*
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModLanguageProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.loot.ModGlobalLootModifierProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.loot.ModLootTableProvider
@@ -10,17 +11,13 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.model.ModBlockStateProvi
 import dev.aaronhowser.mods.excessive_utilities.datagen.model.ModItemModelProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.recipe.ModRecipeProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.*
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModBiomes
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModConfiguredFeatures
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModDimensionTypes
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModLevelStems
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModNoiseSettings
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider
 import net.neoforged.neoforge.data.event.GatherDataEvent
+import net.neoforged.neoforge.registries.NeoForgeRegistries
 
 @EventBusSubscriber(modid = ExcessiveUtilities.MOD_ID)
 object ModDataGen {
@@ -44,8 +41,9 @@ object ModDataGen {
 					.add(Registries.LEVEL_STEM, ModLevelStems::bootstrap)
 					.add(Registries.DIMENSION_TYPE, ModDimensionTypes::bootstrap)
 					.add(Registries.BIOME, ModBiomes::bootstrap)
-					.add(Registries.CONFIGURED_CARVER, ModConfiguredFeatures::bootstrap)
-				,
+					.add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
+					.add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
+					.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap),
 				setOf(ExcessiveUtilities.MOD_ID)
 			)
 		)

@@ -1,0 +1,15 @@
+{
+  "feature": "excessive_utilities:deep_dark_pillar",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    }
+  ]
+}
