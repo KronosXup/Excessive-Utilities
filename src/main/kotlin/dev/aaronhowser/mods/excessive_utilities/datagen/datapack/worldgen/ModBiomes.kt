@@ -9,7 +9,7 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings
 import net.minecraft.world.level.biome.BiomeSpecialEffects
 import net.minecraft.world.level.biome.MobSpawnSettings
 
-object ModBiomeProvider {
+object ModBiomes {
 
 	val DEEP_DARK = rk("deep_dark")
 

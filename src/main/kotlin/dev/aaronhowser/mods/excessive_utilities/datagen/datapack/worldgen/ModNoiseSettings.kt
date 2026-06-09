@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.levelgen.*
 
-object ModNoiseSettingsProvider {
+object ModNoiseSettings {
 
 	const val FLOOR_TOP = 64
 	const val CEILING_BOTTOM = 128

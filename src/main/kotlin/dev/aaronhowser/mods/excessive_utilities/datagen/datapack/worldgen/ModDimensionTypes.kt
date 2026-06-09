@@ -10,7 +10,7 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes
 import net.minecraft.world.level.dimension.DimensionType
 import java.util.*
 
-object ModDimensionTypeProvider {
+object ModDimensionTypes {
 
 	val THE_LAST_MILLENNIUM: ResourceKey<DimensionType> =
 		rk("the_last_millennium")

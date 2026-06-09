@@ -5,7 +5,6 @@ import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.worldgen.BootstrapContext
 import net.minecraft.resources.ResourceKey
-import net.minecraft.world.level.biome.BiomeSources
 import net.minecraft.world.level.biome.Biomes
 import net.minecraft.world.level.biome.FixedBiomeSource
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource
@@ -18,7 +17,7 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings
 import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings
 import java.util.*
 
-object ModLevelStemProvider {
+object ModLevelStems {
 
 	val QUANTUM_QUARRY: ResourceKey<LevelStem> =
 		rk("quantum_quarry")
@@ -67,7 +66,7 @@ object ModLevelStemProvider {
 		context.register(
 			THE_LAST_MILLENNIUM,
 			LevelStem(
-				dimensionTypeLookup.getOrThrow(ModDimensionTypeProvider.THE_LAST_MILLENNIUM),
+				dimensionTypeLookup.getOrThrow(ModDimensionTypes.THE_LAST_MILLENNIUM),
 				FlatLevelSource(tlmSettings)
 			)
 		)
@@ -75,10 +74,10 @@ object ModLevelStemProvider {
 		context.register(
 			DEEP_DARK,
 			LevelStem(
-				dimensionTypeLookup.getOrThrow(ModDimensionTypeProvider.DEEP_DARK),
+				dimensionTypeLookup.getOrThrow(ModDimensionTypes.DEEP_DARK),
 				NoiseBasedChunkGenerator(
-					FixedBiomeSource(biomeLookup.getOrThrow(ModBiomeProvider.DEEP_DARK)),
-					noiseSettingsLookup.getOrThrow(ModNoiseSettingsProvider.DEEP_DARK)
+					FixedBiomeSource(biomeLookup.getOrThrow(ModBiomes.DEEP_DARK)),
+					noiseSettingsLookup.getOrThrow(ModNoiseSettings.DEEP_DARK)
 				)
 			)
 		)

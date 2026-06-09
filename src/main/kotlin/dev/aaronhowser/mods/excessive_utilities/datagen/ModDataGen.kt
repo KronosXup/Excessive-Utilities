@@ -10,10 +10,11 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.model.ModBlockStateProvi
 import dev.aaronhowser.mods.excessive_utilities.datagen.model.ModItemModelProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.recipe.ModRecipeProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.*
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModBiomeProvider
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModDimensionTypeProvider
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModLevelStemProvider
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModNoiseSettingsProvider
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModBiomes
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModConfiguredFeatures
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModDimensionTypes
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModLevelStems
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModNoiseSettings
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries
 import net.neoforged.bus.api.SubscribeEvent
@@ -39,10 +40,11 @@ object ModDataGen {
 				RegistrySetBuilder()
 					.add(Registries.DAMAGE_TYPE, ModDamageTypeProvider::bootstrap)
 					.add(Registries.ENCHANTMENT, ModEnchantmentProvider::bootstrap)
-					.add(Registries.NOISE_SETTINGS, ModNoiseSettingsProvider::bootstrap)
-					.add(Registries.LEVEL_STEM, ModLevelStemProvider::bootstrap)
-					.add(Registries.DIMENSION_TYPE, ModDimensionTypeProvider::bootstrap)
-					.add(Registries.BIOME, ModBiomeProvider::bootstrap)
+					.add(Registries.NOISE_SETTINGS, ModNoiseSettings::bootstrap)
+					.add(Registries.LEVEL_STEM, ModLevelStems::bootstrap)
+					.add(Registries.DIMENSION_TYPE, ModDimensionTypes::bootstrap)
+					.add(Registries.BIOME, ModBiomes::bootstrap)
+					.add(Registries.CONFIGURED_CARVER, ModConfiguredFeatures::bootstrap)
 				,
 				setOf(ExcessiveUtilities.MOD_ID)
 			)
