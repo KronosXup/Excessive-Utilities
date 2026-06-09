@@ -13,8 +13,8 @@ object ModNoiseSettings {
 	const val CEILING_BOTTOM = 128
 	const val BLEND_THICKNESS = 8
 
-	const val MIN_Y = 0
-	const val MAX_Y = 256
+	const val MIN_Y = -64
+	const val MAX_Y = 319
 
 	val DEEP_DARK = rk("deep_dark")
 

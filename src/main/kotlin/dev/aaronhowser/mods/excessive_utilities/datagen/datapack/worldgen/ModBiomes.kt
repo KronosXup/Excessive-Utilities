@@ -4,14 +4,11 @@ import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.worldgen.BiomeDefaultFeatures
 import net.minecraft.data.worldgen.BootstrapContext
-import net.minecraft.data.worldgen.features.OreFeatures
-import net.minecraft.data.worldgen.placement.OrePlacements
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.biome.Biome
 import net.minecraft.world.level.biome.BiomeGenerationSettings
 import net.minecraft.world.level.biome.BiomeSpecialEffects
 import net.minecraft.world.level.biome.MobSpawnSettings
-import net.minecraft.world.level.levelgen.GenerationStep
 
 object ModBiomes {
 
