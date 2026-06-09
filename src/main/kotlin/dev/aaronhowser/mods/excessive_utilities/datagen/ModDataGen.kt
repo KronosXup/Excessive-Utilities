@@ -32,26 +32,15 @@ object ModDataGen {
 		val existingFileHelper = event.existingFileHelper
 		val lookupProvider = event.lookupProvider
 
-		val withDensity = generator.addProvider(
+		val datapackRegistrySets = generator.addProvider(
 			event.includeServer(),
 			DatapackBuiltinEntriesProvider(
 				output,
 				lookupProvider,
 				RegistrySetBuilder()
-					.add(Registries.DENSITY_FUNCTION, ModDensityFunctionsProvider::bootstrap)
-				,
-				setOf(ExcessiveUtilities.MOD_ID)
-			)
-		)
-
-		val datapackRegistrySets = generator.addProvider(
-			event.includeServer(),
-			DatapackBuiltinEntriesProvider(
-				output,
-				withDensity.registryProvider,
-				RegistrySetBuilder()
 					.add(Registries.DAMAGE_TYPE, ModDamageTypeProvider::bootstrap)
 					.add(Registries.ENCHANTMENT, ModEnchantmentProvider::bootstrap)
+					.add(Registries.DENSITY_FUNCTION, ModDensityFunctionsProvider::bootstrap)
 					.add(Registries.NOISE_SETTINGS, ModNoiseSettingsProvider::bootstrap)
 					.add(Registries.LEVEL_STEM, ModLevelStemProvider::bootstrap)
 					.add(Registries.DIMENSION_TYPE, ModDimensionTypeProvider::bootstrap)
