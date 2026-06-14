@@ -13,6 +13,7 @@ import net.minecraft.util.RandomSource
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.MobCategory
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
@@ -43,6 +44,10 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 	// Manually called when initially created
 	override fun tick(state: BlockState, level: ServerLevel, pos: BlockPos, random: RandomSource) {
 		actuallyTick(level, pos, state, random, fastSpreading = true)
+	}
+
+	override fun isFireSource(state: BlockState, level: LevelReader, pos: BlockPos, direction: Direction): Boolean {
+		return direction == Direction.UP
 	}
 
 	private fun actuallyTick(
