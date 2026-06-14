@@ -52,6 +52,9 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 	}
 
 	override fun animateTick(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
+		val lightAbove = level.getRawBrightness(pos.above(), 0)
+		if (lightAbove > MAX_BRIGHTNESS) return
+
 		level.addParticle(
 			ParticleTypes.SMOKE,
 			pos.x + random.nextDouble(),
@@ -77,7 +80,7 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 		if (fastSpreading) {
 			doFastSpread(level, pos, random)
 		} else {
-			if (lightAbove >= 4) return
+			if (lightAbove > MAX_BRIGHTNESS) return
 
 			val spread = doSlowSpread(level, pos, random)
 			if (spread) return
@@ -233,6 +236,8 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 	}
 
 	companion object {
+		const val MAX_BRIGHTNESS = 4
+
 		const val MAX_DECAY = 15
 		val DECAY: IntegerProperty = IntegerProperty.create("decay", 0, MAX_DECAY)
 
