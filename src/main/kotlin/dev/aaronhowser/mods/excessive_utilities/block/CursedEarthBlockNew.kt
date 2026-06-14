@@ -103,30 +103,19 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 
 		if (nearbyMonsters >= ServerConfig.CONFIG.cursedEarthMaxSpawnedMobs.get()) return
 
-		val type = getEntityType(level, pos, random) ?: return
-		val entity = type.create(level) as? Mob ?: return
-
-		val success = EventHooks.finalizeMobSpawn(
-			entity,
-			level,
-			level.getCurrentDifficultyAt(pos),
-			MobSpawnType.NATURAL,
-			null
-		)
-
-		entity.setPos(pos.x + 0.5, pos.y + 1.1, pos.z + 0.5)
-
-		if (level.noCollision(entity)) {
-			level.addFreshEntity(entity)
+		val mob = getMob(level, pos, random) ?: return
+		mob.setPos(pos.x + 0.5, pos.y + 1.1, pos.z + 0.5)
+		if (level.noCollision(mob)) {
+			level.addFreshEntity(mob)
 		}
 	}
 
 	// https://github.com/Tfarcenim/CursedEarth/blob/master/src/main/java/com/tfar/cursedearth/CursedEarthBlock.java#L136
-	private fun getEntityType(
+	private fun getMob(
 		level: ServerLevel,
 		pos: BlockPos,
 		random: RandomSource
-	): EntityType<*>? {
+	): Mob? {
 		val spawnOptions = level
 			.chunkSource
 			.generator
@@ -155,7 +144,22 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 		)
 
 		if (!canSpawn) return null
-		return type
+
+		val mob = type.create(level) as? Mob ?: return null
+
+		val success = EventHooks.finalizeMobSpawn(
+			mob,
+			level,
+			level.getCurrentDifficultyAt(pos),
+			MobSpawnType.NATURAL,
+			null
+		)
+
+		if (success == null) {
+			return null
+		}
+
+		return mob
 	}
 
 	private fun doSlowSpread(
