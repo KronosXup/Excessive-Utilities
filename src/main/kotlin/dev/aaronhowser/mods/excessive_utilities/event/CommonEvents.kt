@@ -322,29 +322,7 @@ object CommonEvents {
 	fun afterEntityTick(event: EntityTickEvent.Post) {
 		val entity = event.entity
 		if (entity is ItemEntity) {
-			makeDemonMetal(entity)
-		}
-	}
-
-	private fun makeDemonMetal(itemEntity: ItemEntity) {
-		val level = itemEntity.level() as? ServerLevel ?: return
-		if (level.dimension() != Level.NETHER) return
-
-		val item = itemEntity.item
-		val output = item.item
-			.builtInRegistryHolder()
-			.getData(NetherLavaDunkConversion.DATA_MAP)
-			?.output
-			?: return
-
-		val pos = itemEntity.blockPosition()
-		val fluidState = level.getFluidState(pos)
-		if (fluidState.isFluid(FluidTags.LAVA)) {
-			val count = item.count
-			val demonStack = output.copyWithCount(count)
-
-			itemEntity.item = demonStack
-			itemEntity.deltaMovement = Vec3.ZERO
+			NetherLavaDunkConversion.tryConvert(entity)
 		}
 	}
 
