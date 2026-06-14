@@ -1,5 +1,6 @@
 package dev.aaronhowser.mods.excessive_utilities.event
 
+import com.mojang.blaze3d.systems.RenderSystem
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isItem
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.toComponent
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
@@ -18,6 +19,7 @@ import dev.aaronhowser.mods.excessive_utilities.config.ClientConfig
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMenuLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.model.ModItemModelProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
+import dev.aaronhowser.mods.excessive_utilities.handler.CursedEarthHandler
 import dev.aaronhowser.mods.excessive_utilities.handler.key_handler.ClientKeyHandler
 import dev.aaronhowser.mods.excessive_utilities.item.*
 import dev.aaronhowser.mods.excessive_utilities.registry.*
@@ -266,6 +268,25 @@ object ClientEvents {
 	@SubscribeEvent
 	fun addEntityRenderLayers(event: EntityRenderersEvent.AddLayers) {
 		CuriosRendererRegistry.register(ModItems.ANGEL_RING.get(), ::AngelWingRenderer)
+	}
+
+	@SubscribeEvent
+	fun beforeRenderEntity(event: RenderLivingEvent.Pre<*, *>) {
+		val entity = event.entity
+
+		if (CursedEarthHandler.isCursed(entity)) {
+			val darkTintValue = 0.1f
+			RenderSystem.setShaderColor(darkTintValue, darkTintValue, darkTintValue, 1f)
+		}
+	}
+
+	@SubscribeEvent
+	fun afterRenderEntity(event: RenderLivingEvent.Post<*, *>) {
+		val entity = event.entity
+
+		if (CursedEarthHandler.isCursed(entity)) {
+			RenderSystem.setShaderColor(1f, 1f, 1f, 1f)
+		}
 	}
 
 }
