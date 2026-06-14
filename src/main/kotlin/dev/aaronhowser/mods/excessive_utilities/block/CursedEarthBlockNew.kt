@@ -1,6 +1,7 @@
 package dev.aaronhowser.mods.excessive_utilities.block
 
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isBlock
+import dev.aaronhowser.mods.aaron.misc.AaronExtensions.nextRange
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.oneIn
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModBlockTagsProvider
 import net.minecraft.core.BlockPos
@@ -67,6 +68,10 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 			pos.offset(-1, -2, -1),
 			pos.offset(1, 2, 1)
 		)
+
+		for (candidate in candidates) {
+			trySpread(level, pos, candidate, random, fastSpreading = true)
+		}
 	}
 
 	private fun trySpread(
@@ -92,6 +97,10 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 			targetPos,
 			defaultBlockState().setValue(DECAY, decayForTarget)
 		)
+
+		if (fastSpreading) {
+			level.scheduleTick(targetPos, this, random.nextRange(2, 10))
+		}
 
 		return true
 	}
