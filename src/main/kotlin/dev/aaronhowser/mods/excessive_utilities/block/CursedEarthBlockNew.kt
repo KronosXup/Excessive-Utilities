@@ -56,7 +56,28 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 
 		if (fastSpreading) {
 			doFastSpread(level, pos, random)
+		} else {
+			val spread = doSlowSpread(level, pos, random)
+			if (spread) return
 		}
+	}
+
+	private fun doSlowSpread(
+		level: ServerLevel,
+		pos: BlockPos,
+		random: RandomSource
+	): Boolean {
+		val randomNearby = BlockPos.randomInCube(random, 4, pos, 2)
+
+		var spreadAny = false
+		for (candidate in randomNearby) {
+			val spreadSuccessful = trySpread(level, pos, candidate, random, fastSpreading = false)
+			if (spreadSuccessful) {
+				spreadAny = true
+			}
+		}
+
+		return spreadAny
 	}
 
 	private fun doFastSpread(
