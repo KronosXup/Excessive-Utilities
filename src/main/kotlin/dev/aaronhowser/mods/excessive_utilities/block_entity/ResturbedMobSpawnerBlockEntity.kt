@@ -20,7 +20,6 @@ import net.minecraft.world.level.Spawner
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
-//TODO: Apply the same logic as Cursed Earth... which currently does nothing
 class ResturbedMobSpawnerBlockEntity(
 	pos: BlockPos,
 	blockState: BlockState

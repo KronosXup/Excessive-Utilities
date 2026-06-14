@@ -31,6 +31,7 @@ import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.event.AnvilUpdateEvent
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent
+import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent
@@ -44,6 +45,7 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent
 import net.neoforged.neoforge.event.tick.ServerTickEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent
+import kotlin.jvm.optionals.getOrNull
 
 
 @EventBusSubscriber(
@@ -398,6 +400,15 @@ object CommonEvents {
 				event.burnTime = 16000
 				return
 			}
+		}
+	}
+
+	@SubscribeEvent
+	fun onFinalizeSpawn(event: FinalizeSpawnEvent) {
+		val spawner = event.spawner
+
+		if (spawner?.left()?.getOrNull() is ResturbedMobSpawnerBlockEntity) {
+			CursedEarthHandler.setCursed(event.entity, value = true)
 		}
 	}
 

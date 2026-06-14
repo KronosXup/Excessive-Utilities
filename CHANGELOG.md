@@ -7,6 +7,7 @@
 	- Lights with Soul Fire instead of Fire
 	- Mobs now spawn as Cursed
 		- Configurable boosts to damage and speed
+- Mobs spawned by the Resturbed Mob Spawner also now spawn cursed
 
 # 1.5.0
 
