@@ -26,34 +26,7 @@ class ResturbedMobSpawnerBlockEntity(
 	blockState: BlockState
 ) : SyncingBlockEntity(ModBlockEntityTypes.RESTURBED_MOB_SPAWNER.get(), pos, blockState), Spawner {
 
-	val spawner: BaseSpawner =
-		object : BaseSpawner() {
-			override fun broadcastEvent(level: Level, pos: BlockPos, eventId: Int) {
-				level.blockEvent(pos, blockState.block, eventId, 0)
-			}
-
-			override fun setNextSpawnData(level: Level?, pos: BlockPos, nextSpawnData: SpawnData) {
-				super.setNextSpawnData(level, pos, nextSpawnData)
-
-				if (level != null) {
-					val state = level.getBlockState(pos)
-					level.sendBlockUpdated(pos, state, state, 4)
-				}
-			}
-
-			override fun getOwner(): Either<BlockEntity, Entity> {
-				return Either.left(this@ResturbedMobSpawnerBlockEntity)
-			}
-
-			override fun clientTick(level: Level, pos: BlockPos) {
-				if (level.hasNeighborSignal(pos)) {
-					oSpin = spin
-					return
-				}
-
-				super.clientTick(level, pos)
-			}
-		}
+	val spawner = Spawner(this)
 
 	override fun setEntityId(entityType: EntityType<*>, random: RandomSource) {
 		spawner.setEntityId(entityType, level, random, blockPos)
@@ -111,6 +84,36 @@ class ResturbedMobSpawnerBlockEntity(
 			} else {
 				blockEntity.clientTick(level)
 			}
+		}
+	}
+
+	class Spawner(
+		val blockEntity: ResturbedMobSpawnerBlockEntity
+	) : BaseSpawner() {
+		override fun broadcastEvent(level: Level, pos: BlockPos, eventId: Int) {
+			level.blockEvent(pos, blockEntity.blockState.block, eventId, 0)
+		}
+
+		override fun setNextSpawnData(level: Level?, pos: BlockPos, nextSpawnData: SpawnData) {
+			super.setNextSpawnData(level, pos, nextSpawnData)
+
+			if (level != null) {
+				val state = level.getBlockState(pos)
+				level.sendBlockUpdated(pos, state, state, 4)
+			}
+		}
+
+		override fun getOwner(): Either<BlockEntity, Entity> {
+			return Either.left(blockEntity)
+		}
+
+		override fun clientTick(level: Level, pos: BlockPos) {
+			if (level.hasNeighborSignal(pos)) {
+				oSpin = spin
+				return
+			}
+
+			super.clientTick(level, pos)
 		}
 	}
 
