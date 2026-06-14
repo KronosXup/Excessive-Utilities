@@ -279,6 +279,10 @@ class CursedEarthBlock : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 		val isFireNearby = isFireAbove || isFireNearby(level, pos, random)
 		if (!isFireNearby) return false
 
+		if (!isFireAbove) {
+			level.setBlockAndUpdate(pos.above(), Blocks.SOUL_FIRE.defaultBlockState())
+		}
+
 		burnNearbyCursedEarth(level, pos, random)
 		return true
 	}
@@ -294,12 +298,12 @@ class CursedEarthBlock : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 			val stateThere = level.getBlockState(targetPos)
 			if (!stateThere.isBlock(this)) continue
 
-			val posAbove = targetPos.above()
-			val stateAbove = level.getBlockState(posAbove)
-			if (stateAbove.isFlammable(level, posAbove, Direction.UP)) {
-				level.setBlockAndUpdate(posAbove, Blocks.SOUL_FIRE.defaultBlockState())
+			val posAboveThere = targetPos.above()
+			val stateAbove = level.getBlockState(posAboveThere)
+			if (stateAbove.isAir) {
+				level.setBlockAndUpdate(posAboveThere, Blocks.SOUL_FIRE.defaultBlockState())
 			} else {
-				level.setBlockAndUpdate(targetPos, Blocks.DIRT.defaultBlockState())
+				level.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState())
 			}
 		}
 	}
