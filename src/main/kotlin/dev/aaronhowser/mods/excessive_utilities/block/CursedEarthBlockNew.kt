@@ -105,7 +105,7 @@ class CursedEarthBlockNew : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 
 		val mob = getMob(level, pos, random) ?: return
 		mob.setPos(pos.x + 0.5, pos.y + 1.1, pos.z + 0.5)
-		if (level.noCollision(mob)) {
+		if (mob.checkSpawnObstruction(level)) {
 			level.addFreshEntity(mob)
 		}
 	}
