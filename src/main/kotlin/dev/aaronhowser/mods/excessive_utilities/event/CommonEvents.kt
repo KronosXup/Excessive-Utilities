@@ -14,6 +14,7 @@ import dev.aaronhowser.mods.excessive_utilities.datamap.NetherLavaDunkConversion
 import dev.aaronhowser.mods.excessive_utilities.effect.SecondChanceEffect
 import dev.aaronhowser.mods.excessive_utilities.entity.FlatTransferNodeEntity
 import dev.aaronhowser.mods.excessive_utilities.handler.CursedEarthHandler
+import dev.aaronhowser.mods.excessive_utilities.handler.division_sigil.DivisionSigilActivation
 import dev.aaronhowser.mods.excessive_utilities.handler.grid_power.GridPowerHandler
 import dev.aaronhowser.mods.excessive_utilities.handler.key_handler.KeyHandler
 import dev.aaronhowser.mods.excessive_utilities.handler.rainbow_generator.RainbowGeneratorHandler
@@ -380,7 +381,7 @@ object CommonEvents {
 
 	@SubscribeEvent
 	fun onEntityDeath(event: LivingDeathEvent) {
-		DivisionSigilItem.handleEntityDeath(event)
+		DivisionSigilActivation.handleEntityDeath(event)
 	}
 
 	@SubscribeEvent

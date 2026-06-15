@@ -2,38 +2,30 @@ package dev.aaronhowser.mods.excessive_utilities.item
 
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.getDirectionName
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isBlock
-import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isClientSide
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isHolder
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isItem
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.tell
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.toComponent
-import dev.aaronhowser.mods.excessive_utilities.block.CursedEarthBlock
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModItemLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMenuLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMessageLang
-import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModBlockTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
+import dev.aaronhowser.mods.excessive_utilities.handler.division_sigil.DivisionSigilActivation
 import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
-import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.tags.BlockTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.InteractionResult
-import net.minecraft.world.entity.Mob
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.context.UseOnContext
-import net.minecraft.world.level.LightLayer
 import net.minecraft.world.level.block.Blocks
-import net.minecraft.world.phys.AABB
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
 import net.neoforged.neoforge.items.IItemHandler
 
 class DivisionSigilItem(properties: Properties) : Item(properties) {
@@ -48,8 +40,8 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 
 		if (isInverted(stack)) return InteractionResult.PASS
 
-		if (tryActivate(player, pos)) return InteractionResult.SUCCESS
-		if (tryInvert(player, pos)) return InteractionResult.SUCCESS
+		if (checkActivationReady(player, pos)) return InteractionResult.SUCCESS
+		if (checkInversionReady(player, pos)) return InteractionResult.SUCCESS
 
 		return InteractionResult.PASS
 	}
@@ -108,19 +100,19 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			return !stack.has(ModDataComponents.REMAINING_USES)
 		}
 
-		private fun tryActivate(
+		private fun checkActivationReady(
 			player: Player,
 			pos: BlockPos
 		): Boolean {
 			val level = player.level() as? ServerLevel ?: return false
 			if (!level.getBlockState(pos).isBlock(Blocks.ENCHANTING_TABLE)) return false
 
-			val result = getActivationResult(level, pos)
+			val result = DivisionSigilActivation.isValidSetup(level, pos)
 			sendMessages(player, result.messages)
 			return result.isReady
 		}
 
-		private fun tryInvert(
+		private fun checkInversionReady(
 			player: Player,
 			pos: BlockPos
 		): Boolean {
@@ -141,143 +133,11 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			}
 		}
 
-		private fun getActivationResult(
-			level: ServerLevel,
-			enchantingTablePos: BlockPos
-		): ActivationResult {
-			val result = ActivationResult(isReady = true)
-
-			if (!level.isLoaded(enchantingTablePos)) {
-				result.isReady = false
-				return result
-			}
-
-			if (!level.getBlockState(enchantingTablePos).isBlock(Blocks.ENCHANTING_TABLE)) {
-				result.isReady = false
-				return result
-			}
-
-			checkActivationBiome(level, enchantingTablePos, result)
-			checkActivationSkyAccess(level, enchantingTablePos, result)
-			if (!result.isReady) {
-				return result
-			}
-
-			checkActivationRedstoneRing(level, enchantingTablePos, result)
-			if (!result.isReady) {
-				return result
-			}
-
-			checkActivationDirtBase(level, enchantingTablePos, result)
-			if (!result.isReady) {
-				return result
-			}
-
-			checkActivationTime(level, result)
-			checkActivationDarkness(level, enchantingTablePos, result)
-			if (!result.isReady) {
-				return result
-			}
-
-			result.addMessages(
-				ModMessageLang.DIVISION_READY_ONE.toComponent(),
-				ModMessageLang.DIVISION_READY_TWO.toComponent()
-			)
-
-			return result
-		}
-
-		private fun checkActivationBiome(
-			level: ServerLevel,
-			pos: BlockPos,
-			result: ActivationResult
-		) {
-			if (!level.getBiome(pos).isHolder(Tags.Biomes.IS_OVERWORLD)) {
-				result.failWithMessages(ModMessageLang.DIVISION_OVERWORLD_ONLY.toComponent())
-			}
-		}
-
-		private fun checkActivationSkyAccess(
-			level: ServerLevel,
-			pos: BlockPos,
-			result: ActivationResult
-		) {
-			if (!level.canSeeSky(pos)) {
-				result.failWithMessages(ModMessageLang.DIVISION_SEE_SKY.toComponent())
-			}
-		}
-
-		private fun checkActivationRedstoneRing(
-			level: ServerLevel,
-			enchantingTablePos: BlockPos,
-			result: ActivationResult
-		) {
-			val radius = 1
-
-			for (dx in -radius..radius) {
-				for (dz in -radius..radius) {
-					if (dx == 0 && dz == 0) continue
-
-					val checkPos = enchantingTablePos.offset(dx, 0, dz)
-					if (!level.getBlockState(checkPos).isBlock(Blocks.REDSTONE_WIRE)) {
-						result.failWithMessages(
-							ModMessageLang.DIVISION_REDSTONE.toComponent(),
-							ModMessageLang.DIVISION_REDSTONE_AT.toComponent(checkPos.x, checkPos.y, checkPos.z)
-						)
-					}
-				}
-			}
-		}
-
-		private fun checkActivationDirtBase(
-			level: ServerLevel,
-			enchantingTablePos: BlockPos,
-			result: ActivationResult
-		) {
-			val dirtRadius = 5
-			val dirtArea = BlockPos.betweenClosed(
-				enchantingTablePos.offset(-dirtRadius, -1, -dirtRadius),
-				enchantingTablePos.offset(dirtRadius, -1, dirtRadius)
-			)
-
-			for (checkPos in dirtArea) {
-				if (!level.getBlockState(checkPos).isBlock(BlockTags.DIRT)) {
-					result.failWithMessages(
-						ModMessageLang.DIVISION_DIRT.toComponent(),
-						ModMessageLang.DIVISION_DIRT_AT.toComponent(checkPos.x, checkPos.y, checkPos.z)
-					)
-				}
-			}
-		}
-
-		private fun checkActivationTime(
-			level: ServerLevel,
-			result: ActivationResult
-		) {
-			val minTime = 17_500
-			val maxTime = 18_500
-			if (level.dayTime !in minTime..maxTime) {
-				result.failWithMessages(ModMessageLang.DIVISION_MIDNIGHT.toComponent())
-			}
-		}
-
-		private fun checkActivationDarkness(
-			level: ServerLevel,
-			enchantingTablePos: BlockPos,
-			result: ActivationResult
-		) {
-			val lightAbove = level.getBrightness(LightLayer.BLOCK, enchantingTablePos.above())
-			val maxLight = 7
-			if (lightAbove > maxLight) {
-				result.failWithMessages(ModMessageLang.DIVISION_DARKNESS.toComponent())
-			}
-		}
-
 		private fun getInversionResult(
 			level: ServerLevel,
 			beaconPos: BlockPos
-		): ActivationResult {
-			val result = ActivationResult(isReady = true)
+		): DivisionSigilActivation.ActivationResult {
+			val result = DivisionSigilActivation.ActivationResult(isReady = true)
 
 			if (!level.isLoaded(beaconPos)) {
 				result.isReady = false
@@ -320,7 +180,7 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 		private fun checkInversionBiome(
 			level: ServerLevel,
 			beaconPos: BlockPos,
-			result: ActivationResult
+			result: DivisionSigilActivation.ActivationResult
 		) {
 			if (!level.getBiome(beaconPos).isHolder(Tags.Biomes.IS_END)) {
 				result.failWithMessages(ModMessageLang.INVERSION_END_ONLY.toComponent())
@@ -330,7 +190,7 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 		private fun checkInversionChests(
 			level: ServerLevel,
 			beaconPos: BlockPos,
-			result: ActivationResult
+			result: DivisionSigilActivation.ActivationResult
 		) {
 			for (direction in Direction.Plane.HORIZONTAL) {
 				val checkPos = beaconPos.offset(direction.normal.multiply(CHEST_HORIZONTAL_OFFSET))
@@ -351,7 +211,7 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 		private fun checkInversionPattern(
 			level: ServerLevel,
 			beaconPos: BlockPos,
-			result: ActivationResult
+			result: DivisionSigilActivation.ActivationResult
 		) {
 			// ◼ = redstone wire, ◻ = tripwire (string), B = beacon (center, skipped)
 			val patternRows = listOf(
@@ -398,7 +258,7 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 		private fun checkInversionItemContents(
 			level: ServerLevel,
 			beaconPos: BlockPos,
-			result: ActivationResult
+			result: DivisionSigilActivation.ActivationResult
 		) {
 			val contentRequirements = mapOf(
 				Direction.NORTH to ModItemTagsProvider.CHILDREN_OF_FIRE,
@@ -465,114 +325,6 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			return uniqueItems.size
 		}
 
-		fun handleEntityDeath(event: LivingDeathEvent) {
-			if (event.isCanceled) return
-
-			val entity = event.entity
-			if (entity.isClientSide) return
-			if (entity !is Mob) return
-
-			activateSigilsNear(entity)
-		}
-
-		private fun activateSigilsNear(entity: Mob) {
-			val level = entity.level() as? ServerLevel ?: return
-			val entityPos = entity.blockPosition()
-
-			val enchantingTablePos = findNearbyActivatableTable(level, entityPos) ?: return
-			val sigils = collectSigilsNearTable(level, enchantingTablePos)
-
-			if (sigils.isEmpty()) return
-
-			rechargeSigils(sigils)
-			tryPlaceCursedEarth(level, enchantingTablePos)
-		}
-
-		private fun findNearbyActivatableTable(
-			level: ServerLevel,
-			entityPos: BlockPos
-		): BlockPos? {
-			val radius = 10
-
-			val searchArea = BlockPos.betweenClosed(
-				entityPos.offset(-radius, -radius, -radius),
-				entityPos.offset(radius, radius, radius)
-			)
-
-			for (checkPos in searchArea) {
-				if (getActivationResult(level, checkPos).isReady) {
-					return checkPos.immutable()
-				}
-			}
-
-			return null
-		}
-
-		private fun collectSigilsNearTable(
-			level: ServerLevel,
-			enchantingTablePos: BlockPos
-		): List<ItemStack> {
-			val radius = 20.0
-			val searchBox = AABB(enchantingTablePos).inflate(radius)
-			val nearbyPlayers = level.getEntitiesOfClass(Player::class.java, searchBox)
-
-			val sigils = mutableListOf<ItemStack>()
-
-			for (player in nearbyPlayers) {
-				val lowestChargeSigil = findLowestChargeSigil(player) ?: continue
-				sigils.add(lowestChargeSigil)
-			}
-
-			return sigils
-		}
-
-		private fun findLowestChargeSigil(player: Player): ItemStack? {
-			val allStacks = player.inventory.items + player.inventory.offhand
-
-			var lowestSigil: ItemStack? = null
-			var lowestCharges = Int.MAX_VALUE
-
-			for (stack in allStacks) {
-				if (!stack.isItem(ModItems.DIVISION_SIGIL)) continue
-
-				val charges = stack.getOrDefault(ModDataComponents.REMAINING_USES, 0)
-				if (charges in 0 until lowestCharges) {
-					lowestCharges = charges
-					lowestSigil = stack
-				}
-			}
-
-			return lowestSigil
-		}
-
-		private fun rechargeSigils(sigils: List<ItemStack>) {
-			for (sigil in sigils) {
-				sigil.set(ModDataComponents.REMAINING_USES, USES_AFTER_ACTIVATION)
-			}
-		}
-
-		private fun tryPlaceCursedEarth(level: ServerLevel, enchantingTablePos: BlockPos) {
-			val posBelow = enchantingTablePos.below()
-			if (level.getBlockState(posBelow).isBlock(ModBlockTagsProvider.CURSED_EARTH_REPLACEABLE)) {
-				CursedEarthBlock.placeAndSpread(level, posBelow)
-			}
-		}
-
-	}
-
-	private class ActivationResult(
-		var isReady: Boolean
-	) {
-		val messages: MutableList<Component> = mutableListOf()
-
-		fun failWithMessages(vararg message: Component) {
-			messages += message
-			isReady = false
-		}
-
-		fun addMessages(vararg message: Component) {
-			messages += message
-		}
 	}
 
 }

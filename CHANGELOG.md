@@ -13,6 +13,8 @@
 	- Mobs now spawn as Cursed
 		- Configurable boosts to damage and speed
 - Mobs spawned by the Resturbed Mob Spawner also now spawn cursed
+- Massive refactors to the Division Sigil activation as well
+	- It only activates the Sigil of the person that killed the mob
 
 # 1.5.0
 
