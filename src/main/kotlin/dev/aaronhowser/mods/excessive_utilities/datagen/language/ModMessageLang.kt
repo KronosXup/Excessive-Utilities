@@ -28,6 +28,9 @@ object ModMessageLang {
 	const val INVERSION_READY_ONE = "message.excessive_utilities.inversion.ready_one"
 	const val INVERSION_READY_TWO = "message.excessive_utilities.inversion.ready_two"
 
+	const val INVERSION_RITUAL_LEFT_END = "message.excessive_utilities.inversion.ritual.left_end"
+	const val INVERSION_RITUAL_TOO_FAR = "message.excessive_utilities.inversion.ritual.too_far"
+
 	const val LASSO_FAIL_OWNERSHIP = "message.excessive_utilities.lasso_fail_ownership"
 	const val LASSO_FAIL_PASSIVE_ONLY = "message.excessive_utilities.lasso_fail_passive_only"
 	const val LASSO_FAIL_HOSTILE_ONLY = "message.excessive_utilities.lasso_fail_hostile_only"
