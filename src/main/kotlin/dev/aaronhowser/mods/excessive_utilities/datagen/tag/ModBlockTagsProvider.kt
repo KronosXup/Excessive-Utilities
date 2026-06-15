@@ -356,6 +356,9 @@ class ModBlockTagsProvider(
 		tag(BlockTags.PLANKS)
 			.add(ModBlocks.MAGICAL_PLANKS)
 
+		tag(BlockTags.INFINIBURN_OVERWORLD)
+			.add(ModBlocks.CURSED_EARTH)
+
 		for (color in DyeColor.entries) {
 			val tagName = common("dyed/${color.serializedName}")
 
