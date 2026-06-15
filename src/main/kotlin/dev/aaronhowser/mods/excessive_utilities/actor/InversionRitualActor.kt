@@ -4,6 +4,7 @@ import dev.aaronhowser.mods.aaron.actor.LevelActor
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isEntity
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.tell
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.toComponent
+import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMessageLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModEntityTypeTagsProvider
 import net.minecraft.core.BlockPos
@@ -62,6 +63,11 @@ class InversionRitualActor(
 			.getEntitiesOfClass(Mob::class.java, area)
 			.filter { it.isEntity(ModEntityTypeTagsProvider.INVERSION_RITUAL_DESPAWN_ON_START) }
 
+		for (entity in entitiesToRemove) {
+			entity.discard()
+		}
+
+		ExcessiveUtilities.LOGGER.info("InversionRitualActor discarded ${entitiesToRemove.size} entities")
 	}
 
 	companion object {
