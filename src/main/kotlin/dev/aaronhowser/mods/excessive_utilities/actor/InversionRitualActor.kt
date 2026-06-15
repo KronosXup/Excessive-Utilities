@@ -74,7 +74,7 @@ class InversionRitualActor(
 	}
 
 	private fun cancel() {
-		remove()
+		markForRemoval()
 
 		val entitiesToRemove = level
 			.getEntitiesOfClass(Mob::class.java, area)
