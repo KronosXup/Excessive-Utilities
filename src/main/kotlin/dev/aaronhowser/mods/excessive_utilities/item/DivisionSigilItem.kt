@@ -147,6 +147,11 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 		): ActivationResult {
 			val result = ActivationResult(isReady = true)
 
+			if (!level.isLoaded(enchantingTablePos)) {
+				result.isReady = false
+				return result
+			}
+
 			if (!level.getBlockState(enchantingTablePos).isBlock(Blocks.ENCHANTING_TABLE)) {
 				result.isReady = false
 				return result
@@ -273,6 +278,11 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			beaconPos: BlockPos
 		): ActivationResult {
 			val result = ActivationResult(isReady = true)
+
+			if (!level.isLoaded(beaconPos)) {
+				result.isReady = false
+				return result
+			}
 
 			if (!level.getBlockState(beaconPos).isBlock(Blocks.BEACON)) {
 				result.isReady = false
