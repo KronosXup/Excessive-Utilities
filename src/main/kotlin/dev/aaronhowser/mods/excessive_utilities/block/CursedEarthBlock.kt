@@ -7,7 +7,7 @@ import dev.aaronhowser.mods.aaron.misc.AaronExtensions.oneIn
 import dev.aaronhowser.mods.excessive_utilities.config.ServerConfig
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModBlockTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModEntityTypeTagsProvider
-import dev.aaronhowser.mods.excessive_utilities.handler.CursedEarthHandler
+import dev.aaronhowser.mods.excessive_utilities.handler.CurseHandler
 import dev.aaronhowser.mods.excessive_utilities.registry.ModBlocks
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -107,7 +107,7 @@ class CursedEarthBlock : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 		mob.setPos(pos.x + 0.5, pos.y + 1.1, pos.z + 0.5)
 		if (mob.checkSpawnObstruction(level)) {
 			level.addFreshEntity(mob)
-			CursedEarthHandler.setCursed(mob, true)
+			CurseHandler.setCursed(mob, true)
 		}
 	}
 

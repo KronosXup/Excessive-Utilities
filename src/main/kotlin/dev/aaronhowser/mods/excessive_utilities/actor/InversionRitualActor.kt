@@ -9,7 +9,7 @@ import dev.aaronhowser.mods.aaron.misc.AaronExtensions.toComponent
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMessageLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModEntityTypeTagsProvider
-import dev.aaronhowser.mods.excessive_utilities.handler.CursedEarthHandler
+import dev.aaronhowser.mods.excessive_utilities.handler.CurseHandler
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
@@ -78,7 +78,7 @@ class InversionRitualActor(
 
 		val entitiesToRemove = level
 			.getEntitiesOfClass(Mob::class.java, area)
-			.filter(CursedEarthHandler::isCursed)
+			.filter(CurseHandler::isCursed)
 
 		for (entity in entitiesToRemove) {
 			entity.discard()
@@ -114,7 +114,7 @@ class InversionRitualActor(
 		)
 
 		mob.target = player
-		CursedEarthHandler.setCursed(mob, value = true)
+		CurseHandler.setCursed(mob, value = true)
 
 		if (mob is NeutralMob) {
 			mob.persistentAngerTarget = player.uuid

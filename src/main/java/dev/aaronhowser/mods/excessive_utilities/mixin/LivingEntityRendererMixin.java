@@ -2,7 +2,7 @@ package dev.aaronhowser.mods.excessive_utilities.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.aaronhowser.mods.excessive_utilities.handler.CursedEarthHandler;
+import dev.aaronhowser.mods.excessive_utilities.handler.CurseHandler;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -40,7 +40,7 @@ public abstract class LivingEntityRendererMixin {
 				vertexConsumer,
 				packedLight,
 				packedOverlay,
-				CursedEarthHandler.INSTANCE.isCursed(entity) ? CursedEarthHandler.darkenColor(color) : color
+				CurseHandler.INSTANCE.isCursed(entity) ? CurseHandler.darkenColor(color) : color
 		);
 	}
 

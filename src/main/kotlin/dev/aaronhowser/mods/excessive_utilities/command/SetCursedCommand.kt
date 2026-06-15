@@ -3,7 +3,7 @@ package dev.aaronhowser.mods.excessive_utilities.command
 import com.mojang.brigadier.arguments.BoolArgumentType
 import com.mojang.brigadier.builder.ArgumentBuilder
 import dev.aaronhowser.mods.aaron.command.AaronCommandHelper
-import dev.aaronhowser.mods.excessive_utilities.handler.CursedEarthHandler
+import dev.aaronhowser.mods.excessive_utilities.handler.CurseHandler
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.arguments.EntityArgument
 import net.minecraft.world.entity.Entity
@@ -55,10 +55,10 @@ object SetCursedCommand : AaronCommandHelper {
 		for (target in targets) {
 			if (target !is LivingEntity) continue
 
-			val isAlreadyCursed = CursedEarthHandler.isCursed(target)
+			val isAlreadyCursed = CurseHandler.isCursed(target)
 			if (isAlreadyCursed == value) continue
 
-			CursedEarthHandler.setCursed(target, value)
+			CurseHandler.setCursed(target, value)
 			amountSet++
 		}
 

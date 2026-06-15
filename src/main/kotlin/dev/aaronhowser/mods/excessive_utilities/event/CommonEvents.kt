@@ -14,7 +14,7 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.datamap.NetherLavaDunkConversion
 import dev.aaronhowser.mods.excessive_utilities.effect.SecondChanceEffect
 import dev.aaronhowser.mods.excessive_utilities.entity.FlatTransferNodeEntity
-import dev.aaronhowser.mods.excessive_utilities.handler.CursedEarthHandler
+import dev.aaronhowser.mods.excessive_utilities.handler.CurseHandler
 import dev.aaronhowser.mods.excessive_utilities.handler.division_sigil.DivisionSigilActivation
 import dev.aaronhowser.mods.excessive_utilities.handler.division_sigil.DivisionSigilInversion
 import dev.aaronhowser.mods.excessive_utilities.handler.grid_power.GridPowerHandler
@@ -324,7 +324,7 @@ object CommonEvents {
 			NetherLavaDunkConversion.tryConvert(entity)
 		}
 
-		CursedEarthHandler.spawnParticles(entity)
+		CurseHandler.spawnParticles(entity)
 	}
 
 	@SubscribeEvent
@@ -409,7 +409,7 @@ object CommonEvents {
 		val spawner = event.spawner
 
 		if (spawner?.left()?.getOrNull() is ResturbedMobSpawnerBlockEntity) {
-			CursedEarthHandler.setCursed(event.entity, value = true)
+			CurseHandler.setCursed(event.entity, value = true)
 		}
 	}
 
