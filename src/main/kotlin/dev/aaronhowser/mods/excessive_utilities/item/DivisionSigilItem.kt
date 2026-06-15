@@ -102,7 +102,6 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 		private const val MIDNIGHT_DAY_TIME_MAX = 18_500
 		private const val MAX_BLOCK_LIGHT_FOR_DARKNESS = 7
 		private const val CHEST_HORIZONTAL_OFFSET = 5
-		private const val REDSTONE_RING_RADIUS = 1
 		private const val DIRT_RADIUS = 5
 
 		fun defaultProperties(): Properties {
@@ -145,107 +144,112 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 				return ActivationResult(false)
 			}
 
-			val messages = mutableListOf<Component>()
+			val result = ActivationResult(isReady = true)
 
-			checkActivationBiome(level, enchantingTablePos, messages)
-			checkActivationSkyAccess(level, enchantingTablePos, messages)
-
-			val redstoneResult = checkActivationRedstoneRing(level, enchantingTablePos)
-			if (!redstoneResult.isReady) return ActivationResult(false, messages + redstoneResult.messages)
-			messages += redstoneResult.messages
-
-			val dirtResult = checkActivationDirtBase(level, enchantingTablePos)
-			if (!dirtResult.isReady) return ActivationResult(false, messages + dirtResult.messages)
-			messages += dirtResult.messages
-
-			checkActivationTime(level, messages)
-			checkActivationDarkness(level, enchantingTablePos, messages)
-
-			if (messages.isEmpty()) {
-				messages += ModMessageLang.DIVISION_READY_ONE.toComponent()
-				messages += ModMessageLang.DIVISION_READY_TWO.toComponent()
-
-				return ActivationResult(true, messages)
-			} else {
-				return ActivationResult(false, messages)
+			checkActivationBiome(level, enchantingTablePos, result)
+			checkActivationSkyAccess(level, enchantingTablePos, result)
+			if (!result.isReady) {
+				return result
 			}
+
+			checkActivationRedstoneRing(level, enchantingTablePos, result)
+			if (!result.isReady) {
+				return result
+			}
+
+			checkActivationDirtBase(level, enchantingTablePos, result)
+			if (!result.isReady) {
+				return result
+			}
+
+			checkActivationTime(level, result)
+			checkActivationDarkness(level, enchantingTablePos, result)
+			if (!result.isReady) {
+				return result
+			}
+
+			result.addMessages(
+				ModMessageLang.DIVISION_READY_ONE.toComponent(),
+				ModMessageLang.DIVISION_READY_TWO.toComponent()
+			)
+
+			return result
 		}
 
 		private fun checkActivationBiome(
 			level: ServerLevel,
 			pos: BlockPos,
-			messages: MutableList<Component>
+			result: ActivationResult
 		) {
 			if (!level.getBiome(pos).isHolder(Tags.Biomes.IS_OVERWORLD)) {
-				messages += ModMessageLang.DIVISION_OVERWORLD_ONLY.toComponent()
+				result.failWithMessages(ModMessageLang.DIVISION_OVERWORLD_ONLY.toComponent())
 			}
 		}
 
 		private fun checkActivationSkyAccess(
 			level: ServerLevel,
 			pos: BlockPos,
-			messages: MutableList<Component>
+			result: ActivationResult
 		) {
 			if (!level.canSeeSky(pos)) {
-				messages += ModMessageLang.DIVISION_SEE_SKY.toComponent()
+				result.failWithMessages(ModMessageLang.DIVISION_SEE_SKY.toComponent())
 			}
 		}
 
 		private fun checkActivationRedstoneRing(
 			level: ServerLevel,
-			enchantingTablePos: BlockPos
-		): ActivationResult {
-			val messages = mutableListOf<Component>()
+			enchantingTablePos: BlockPos,
+			result: ActivationResult
+		) {
+			val radius = 1
 
-			for (dx in -REDSTONE_RING_RADIUS..REDSTONE_RING_RADIUS) {
-				for (dz in -REDSTONE_RING_RADIUS..REDSTONE_RING_RADIUS) {
+			for (dx in -radius..radius) {
+				for (dz in -radius..radius) {
 					if (dx == 0 && dz == 0) continue
 
 					val checkPos = enchantingTablePos.offset(dx, 0, dz)
 					if (!level.getBlockState(checkPos).isBlock(Blocks.REDSTONE_WIRE)) {
-						messages += ModMessageLang.DIVISION_REDSTONE.toComponent()
-						messages += ModMessageLang.DIVISION_REDSTONE_AT.toComponent(checkPos.x, checkPos.y, checkPos.z)
-						return ActivationResult(false, messages)
+						result.failWithMessages(
+							ModMessageLang.DIVISION_REDSTONE.toComponent(),
+							ModMessageLang.DIVISION_REDSTONE_AT.toComponent(checkPos.x, checkPos.y, checkPos.z)
+						)
 					}
 				}
 			}
-
-			return ActivationResult(true, messages)
 		}
 
 		private fun checkActivationDirtBase(
 			level: ServerLevel,
-			enchantingTablePos: BlockPos
-		): ActivationResult {
-			val messages = mutableListOf<Component>()
-
+			enchantingTablePos: BlockPos,
+			result: ActivationResult
+		) {
 			for (dx in -DIRT_RADIUS..DIRT_RADIUS) {
 				for (dz in -DIRT_RADIUS..DIRT_RADIUS) {
 					val checkPos = enchantingTablePos.offset(dx, -1, dz)
 					if (!level.getBlockState(checkPos).isBlock(BlockTags.DIRT)) {
-						messages += ModMessageLang.DIVISION_DIRT.toComponent()
-						messages += ModMessageLang.DIVISION_DIRT_AT.toComponent(checkPos.x, checkPos.y, checkPos.z)
-						return ActivationResult(false, messages)
+						result.failWithMessages(
+							ModMessageLang.DIVISION_DIRT.toComponent(),
+							ModMessageLang.DIVISION_DIRT_AT.toComponent(checkPos.x, checkPos.y, checkPos.z)
+						)
 					}
 				}
 			}
-
-			return ActivationResult(true, messages)
 		}
 
-		private fun checkActivationTime(level: ServerLevel, messages: MutableList<Component>) {
+		private fun checkActivationTime(level: ServerLevel, result: ActivationResult) {
 			if (level.dayTime !in MIDNIGHT_DAY_TIME_MIN..MIDNIGHT_DAY_TIME_MAX) {
-				messages += ModMessageLang.DIVISION_MIDNIGHT.toComponent()
+				result.failWithMessages(ModMessageLang.DIVISION_MIDNIGHT.toComponent())
 			}
 		}
 
 		private fun checkActivationDarkness(
 			level: ServerLevel,
 			enchantingTablePos: BlockPos,
-			messages: MutableList<Component>
+			result: ActivationResult
 		) {
-			if (level.getBrightness(LightLayer.BLOCK, enchantingTablePos.above()) > MAX_BLOCK_LIGHT_FOR_DARKNESS) {
-				messages += ModMessageLang.DIVISION_DARKNESS.toComponent()
+			val lightAbove = level.getBrightness(LightLayer.BLOCK, enchantingTablePos.above())
+			if (lightAbove > MAX_BLOCK_LIGHT_FOR_DARKNESS) {
+				result.failWithMessages(ModMessageLang.DIVISION_DARKNESS.toComponent())
 			}
 		}
 
@@ -484,8 +488,18 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 	}
 
 	private class ActivationResult(
-		val isReady: Boolean,
-		val messages: List<Component> = emptyList()
-	)
+		var isReady: Boolean
+	) {
+		val messages: MutableList<Component> = mutableListOf()
+
+		fun failWithMessages(vararg message: Component) {
+			messages += message
+			isReady = false
+		}
+
+		fun addMessages(vararg message: Component) {
+
+		}
+	}
 
 }
