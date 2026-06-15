@@ -70,4 +70,20 @@ object CursedEarthHandler {
 		)
 	}
 
+	const val CURSED_ENTITY_TINT = 0.1f
+
+	@JvmStatic
+	fun darkenColor(color: Int): Int {
+		val alpha = color and -0x1000000
+		val red = darkenChannel(color shr 16)
+		val green = darkenChannel(color shr 8)
+		val blue = darkenChannel(color)
+
+		return alpha or (red shl 16) or (green shl 8) or blue
+	}
+
+	private fun darkenChannel(color: Int): Int {
+		return ((color and 0xFF) * CURSED_ENTITY_TINT).toInt()
+	}
+
 }
