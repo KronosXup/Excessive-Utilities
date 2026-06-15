@@ -2,24 +2,39 @@ package dev.aaronhowser.mods.excessive_utilities.handler.division_sigil
 
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.getDirectionName
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isBlock
+import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isClientSide
+import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isEntity
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isHolder
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isItem
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.toComponent
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMessageLang
+import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModEntityTypeTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.tags.TagKey
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.common.Tags
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
 import net.neoforged.neoforge.items.IItemHandler
 
 object DivisionSigilInversion {
 
 	private const val CHEST_HORIZONTAL_OFFSET = 5
+
+	fun handleEntityDeath(event: LivingDeathEvent) {
+		if (event.isCanceled) return
+
+		val victim = event.entity
+		if (victim.isClientSide || !victim.isEntity(ModEntityTypeTagsProvider.DIVISION_SIGIL_INVERSION_SACRIFICE)) return
+
+		val killer = event.source.entity
+		if (killer !is Player) return
+	}
 
 	fun getInversionResult(
 		level: ServerLevel,

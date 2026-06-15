@@ -30,7 +30,6 @@ object DivisionSigilActivation {
 
 		val victim = event.entity
 		if (victim.isClientSide) return
-		if (victim !is LivingEntity) return
 
 		val killer = event.source.entity
 		if (killer !is Player) return
