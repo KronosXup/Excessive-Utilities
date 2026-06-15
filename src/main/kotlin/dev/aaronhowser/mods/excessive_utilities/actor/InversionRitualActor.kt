@@ -2,12 +2,14 @@ package dev.aaronhowser.mods.excessive_utilities.actor
 
 import dev.aaronhowser.mods.aaron.actor.LevelActor
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isEntity
+import dev.aaronhowser.mods.aaron.misc.AaronExtensions.nextRange
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.tell
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.toComponent
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMessageLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModEntityTypeTagsProvider
 import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
 import net.minecraft.world.entity.Mob
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
@@ -56,6 +58,40 @@ class InversionRitualActor(
 			remove()
 			return
 		}
+	}
+
+	private fun findMobSpawnLocation(
+		player: Player,
+		isFlyingMob: Boolean,
+		runningTries: Int = 0
+	): BlockPos {
+		val random = player.random
+
+		val x = random.nextRange(area.minX, area.maxX)
+		val z = random.nextRange(area.minZ, area.maxZ)
+		val y = player.y + 50
+
+		val mutablePos = BlockPos.MutableBlockPos(x, y, z)
+
+		if (isFlyingMob) {
+			return if (runningTries > 50 || level.isEmptyBlock(mutablePos)) {
+				mutablePos
+			} else {
+				findMobSpawnLocation(player, isFlyingMob = true, runningTries + 1)
+			}
+		}
+
+		while (!level.isEmptyBlock(mutablePos)) {
+			mutablePos.move(Direction.DOWN)
+			if (!level.isInWorldBounds(mutablePos)) {
+				if (runningTries > 50) return mutablePos
+				return findMobSpawnLocation(player, isFlyingMob = false, runningTries + 1)
+			}
+		}
+
+		mutablePos.move(Direction.UP)
+
+		return mutablePos
 	}
 
 	private fun firstTick() {
