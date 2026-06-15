@@ -115,7 +115,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			return !stack.has(ModDataComponents.REMAINING_USES)
 		}
 
-		private fun tryActivate(player: Player, pos: BlockPos): Boolean {
+		private fun tryActivate(
+			player: Player,
+			pos: BlockPos
+		): Boolean {
 			val level = player.level() as? ServerLevel ?: return false
 			if (!level.getBlockState(pos).isBlock(Blocks.ENCHANTING_TABLE)) return false
 
@@ -124,7 +127,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			return result.isReady
 		}
 
-		private fun tryInvert(player: Player, pos: BlockPos): Boolean {
+		private fun tryInvert(
+			player: Player,
+			pos: BlockPos
+		): Boolean {
 			val level = player.level() as? ServerLevel ?: return false
 			if (!level.getBlockState(pos).isBlock(Blocks.BEACON)) return false
 
@@ -133,13 +139,19 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			return result.isReady
 		}
 
-		private fun sendMessages(player: Player, messages: List<Component>) {
+		private fun sendMessages(
+			player: Player,
+			messages: List<Component>
+		) {
 			for (message in messages) {
 				player.tell(message)
 			}
 		}
 
-		private fun getActivationResult(level: ServerLevel, enchantingTablePos: BlockPos): ActivationResult {
+		private fun getActivationResult(
+			level: ServerLevel,
+			enchantingTablePos: BlockPos
+		): ActivationResult {
 			if (!level.getBlockState(enchantingTablePos).isBlock(Blocks.ENCHANTING_TABLE)) {
 				return ActivationResult(false)
 			}
@@ -236,7 +248,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			}
 		}
 
-		private fun checkActivationTime(level: ServerLevel, result: ActivationResult) {
+		private fun checkActivationTime(
+			level: ServerLevel,
+			result: ActivationResult
+		) {
 			if (level.dayTime !in MIDNIGHT_DAY_TIME_MIN..MIDNIGHT_DAY_TIME_MAX) {
 				result.failWithMessages(ModMessageLang.DIVISION_MIDNIGHT.toComponent())
 			}
@@ -253,7 +268,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			}
 		}
 
-		private fun getInversionResult(level: ServerLevel, catalystPos: BlockPos): ActivationResult {
+		private fun getInversionResult(
+			level: ServerLevel,
+			catalystPos: BlockPos
+		): ActivationResult {
 			if (!level.getBlockState(catalystPos).isBlock(Blocks.BEACON)) {
 				return ActivationResult(false)
 			}
@@ -288,7 +306,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			}
 		}
 
-		private fun checkInversionChests(level: ServerLevel, catalystPos: BlockPos): ActivationResult {
+		private fun checkInversionChests(
+			level: ServerLevel,
+			catalystPos: BlockPos
+		): ActivationResult {
 			val messages = mutableListOf<Component>()
 
 			for (direction in Direction.Plane.HORIZONTAL) {
@@ -302,7 +323,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			return ActivationResult(messages.isEmpty(), messages)
 		}
 
-		private fun checkInversionPattern(level: ServerLevel, catalystPos: BlockPos): ActivationResult {
+		private fun checkInversionPattern(
+			level: ServerLevel,
+			catalystPos: BlockPos
+		): ActivationResult {
 			// ◼ = redstone wire, ◻ = tripwire (string), B = beacon (center, skipped)
 			val patternRows = listOf(
 				"◼◻◻◻◻◻◻◻◻",
@@ -379,7 +403,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			}
 		}
 
-		private fun countMatchingStacks(itemHandler: IItemHandler, itemTag: TagKey<Item>): Int {
+		private fun countMatchingStacks(
+			itemHandler: IItemHandler,
+			itemTag: TagKey<Item>
+		): Int {
 			var count = 0
 			for (slot in 0 until itemHandler.slots) {
 				val stack = itemHandler.getStackInSlot(slot)
@@ -390,7 +417,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			return count
 		}
 
-		private fun countUniqueMatchingItems(itemHandler: IItemHandler, itemTag: TagKey<Item>): Int {
+		private fun countUniqueMatchingItems(
+			itemHandler: IItemHandler,
+			itemTag: TagKey<Item>
+		): Int {
 			val uniqueItems = mutableSetOf<Item>()
 			for (slot in 0 until itemHandler.slots) {
 				val stack = itemHandler.getStackInSlot(slot)
@@ -424,7 +454,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			tryPlaceCursedEarth(level, enchantingTablePos)
 		}
 
-		private fun findNearbyActivatableTable(level: ServerLevel, entityPos: BlockPos): BlockPos? {
+		private fun findNearbyActivatableTable(
+			level: ServerLevel,
+			entityPos: BlockPos
+		): BlockPos? {
 			val searchArea = BlockPos.betweenClosed(
 				entityPos.offset(-ACTIVATION_SEARCH_RADIUS, -ACTIVATION_SEARCH_RADIUS, -ACTIVATION_SEARCH_RADIUS),
 				entityPos.offset(ACTIVATION_SEARCH_RADIUS, ACTIVATION_SEARCH_RADIUS, ACTIVATION_SEARCH_RADIUS)
@@ -439,7 +472,10 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 			return null
 		}
 
-		private fun collectSigilsNearTable(level: ServerLevel, enchantingTablePos: BlockPos): List<ItemStack> {
+		private fun collectSigilsNearTable(
+			level: ServerLevel,
+			enchantingTablePos: BlockPos
+		): List<ItemStack> {
 			val searchBox = AABB(enchantingTablePos).inflate(SIGIL_SEARCH_RADIUS)
 			val nearbyPlayers = level.getEntitiesOfClass(Player::class.java, searchBox)
 
@@ -463,7 +499,7 @@ class DivisionSigilItem(properties: Properties) : Item(properties) {
 				if (!stack.isItem(ModItems.DIVISION_SIGIL)) continue
 
 				val charges = stack.getOrDefault(ModDataComponents.REMAINING_USES, 0)
-				if (charges >= 0 && charges < lowestCharges) {
+				if (charges in 0 until lowestCharges) {
 					lowestCharges = charges
 					lowestSigil = stack
 				}
