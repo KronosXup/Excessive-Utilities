@@ -150,17 +150,13 @@ class CursedEarthBlock : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 
 		val mob = type.create(level) as? Mob ?: return null
 
-		val success = EventHooks.finalizeMobSpawn(
+		EventHooks.finalizeMobSpawn(
 			mob,
 			level,
 			level.getCurrentDifficultyAt(pos),
 			MobSpawnType.NATURAL,
 			null
 		)
-
-		if (success == null) {
-			return null
-		}
 
 		return mob
 	}
