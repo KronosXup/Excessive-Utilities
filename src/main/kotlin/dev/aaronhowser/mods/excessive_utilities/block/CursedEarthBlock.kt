@@ -57,7 +57,7 @@ class CursedEarthBlock : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 	}
 
 	override fun animateTick(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
-		val lightAbove = level.getRawBrightness(pos.above(), 0)
+		val lightAbove = level.getMaxLocalRawBrightness(pos.above())
 		if (lightAbove > MAX_BRIGHTNESS) return
 
 		level.addParticle(
@@ -82,7 +82,7 @@ class CursedEarthBlock : Block(Properties.ofFullCopy(Blocks.GRASS_BLOCK)) {
 		if (fastSpreading) {
 			doFastSpread(level, pos, random)
 		} else {
-			val lightAbove = level.getRawBrightness(pos.above(), 0)
+			val lightAbove = level.getMaxLocalRawBrightness(pos.above())
 			if (lightAbove > MAX_BRIGHTNESS) return
 
 			val spread = doSlowSpread(level, pos, random)
