@@ -31,18 +31,6 @@ class ModEntityTypeTagsProvider(
 
 		tag(INVERSION_RITUAL_DESPAWN_ON_START)
 			.add(EntityType.ENDERMAN)
-
-		tag(INVERSION_RITUAL_HORDE_LAND_MOBS)
-			.add(
-				EntityType.ENDERMAN,
-				EntityType.ZOMBIE,
-				EntityType.SKELETON
-			)
-
-		tag(INVERSION_RITUAL_HORDE_AIR_MOBS)
-			.add(
-				EntityType.PHANTOM
-			)
 	}
 
 	companion object {
@@ -54,8 +42,6 @@ class ModEntityTypeTagsProvider(
 
 		val INVERSION_RITUAL_SACRIFICE = create("inversion_ritual_sacrifice")
 		val INVERSION_RITUAL_DESPAWN_ON_START = create("inversion_ritual_despawn_on_start")
-		val INVERSION_RITUAL_HORDE_LAND_MOBS = create("inversion_ritual_horde_land_mobs")
-		val INVERSION_RITUAL_HORDE_AIR_MOBS = create("inversion_ritual_horde_air_air_mobs")
 	}
 
 }

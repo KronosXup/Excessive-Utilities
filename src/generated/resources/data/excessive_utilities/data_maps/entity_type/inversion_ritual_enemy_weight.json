@@ -1,5 +1,13 @@
 {
   "values": {
-    "minecraft:phantom": 1.0
+    "minecraft:bogged": 10.0,
+    "minecraft:enderman": 6.0,
+    "minecraft:husk": 10.0,
+    "minecraft:phantom": 5.0,
+    "minecraft:skeleton": 10.0,
+    "minecraft:stray": 10.0,
+    "minecraft:wither_skeleton": 3.0,
+    "minecraft:zombie": 10.0,
+    "minecraft:zombie_villager": 10.0
   }
 }
