@@ -43,7 +43,13 @@ class InversionRitualEnemyWeight(
 			return null
 		}
 
+		private var cachedWeights: Map<EntityType<out Mob>, Double>? = null
 		fun getWeightedTypes(): Map<EntityType<out Mob>, Double> {
+			val existingCache = cachedWeights
+			if (existingCache != null) {
+				return existingCache
+			}
+
 			val weights = mutableMapOf<EntityType<out Mob>, Double>()
 
 			val registry = BuiltInRegistries.ENTITY_TYPE
@@ -56,6 +62,7 @@ class InversionRitualEnemyWeight(
 				}
 			}
 
+			cachedWeights = weights
 			return weights
 		}
 	}
