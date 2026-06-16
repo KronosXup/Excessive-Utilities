@@ -51,7 +51,6 @@ import net.neoforged.neoforge.common.util.FakePlayerFactory
 import net.neoforged.neoforge.energy.EnergyStorage
 import net.neoforged.neoforge.energy.IEnergyStorage
 import net.neoforged.neoforge.items.IItemHandler
-import net.neoforged.neoforge.items.ItemHandlerHelper
 import java.lang.ref.WeakReference
 import java.util.*
 
