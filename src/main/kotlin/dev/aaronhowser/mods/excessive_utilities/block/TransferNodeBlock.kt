@@ -79,23 +79,9 @@ class TransferNodeBlock(
 	}
 
 	override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
-		val placedOn = state.getValue(PLACED_ON)
+		val key = getShapeKey(state)
 
-		val nodeShape = NODE_SHAPES[placedOn.ordinal]
-		val pipeShape = TransferPipeBlock.ARM_SHAPES[placedOn.ordinal] ?: Shapes.empty()
-
-		var shape = Shapes.or(nodeShape, pipeShape, TransferPipeBlock.CENTER_SHAPE)
-
-		for (dir in Direction.entries) {
-			val ordinal = dir.ordinal
-			val property = CONNECTIONS[ordinal]
-			if (state.getValue(property)) {
-				val pipeShape = TransferPipeBlock.ARM_SHAPES[ordinal] ?: continue
-				shape = Shapes.or(shape, pipeShape)
-			}
-		}
-
-		return shape
+		return shapeCache.computeIfAbsent(key) { buildShape(state) }
 	}
 
 	override fun useWithoutItem(state: BlockState, level: Level, pos: BlockPos, player: Player, hitResult: BlockHitResult): InteractionResult {
@@ -192,6 +178,43 @@ class TransferNodeBlock(
 				box(13.0, 1.0, 1.0, 16.0, 15.0, 15.0) // EAST
 			)
 
+		private val shapeCache: MutableMap<Long, VoxelShape> = mutableMapOf()
+
+		private fun buildShape(state: BlockState): VoxelShape {
+			val placedOn = state.getValue(PLACED_ON)
+
+			val nodeShape = NODE_SHAPES[placedOn.ordinal]
+			val pipeShape = TransferPipeBlock.ARM_SHAPES[placedOn.ordinal] ?: Shapes.empty()
+
+			var shape = Shapes.or(nodeShape, pipeShape, TransferPipeBlock.CENTER_SHAPE)
+
+			for (dir in Direction.entries) {
+				val ordinal = dir.ordinal
+				val property = CONNECTIONS[ordinal]
+				if (state.getValue(property)) {
+					val pipeShape = TransferPipeBlock.ARM_SHAPES[ordinal] ?: continue
+					shape = Shapes.or(shape, pipeShape)
+				}
+			}
+
+			return shape
+		}
+
+		private fun getShapeKey(state: BlockState): Long {
+			val placedOnOrdinal = state.getValue(PLACED_ON).ordinal.toLong()
+			var result = placedOnOrdinal
+
+			for (dir in Direction.entries) {
+				val property = CONNECTIONS.getOrNull(dir.ordinal) ?: continue
+				val isConnected = state.getValue(property)
+				if (!isConnected) continue
+
+				val bitPosition = dir.ordinal + 8
+				result = result or (1L shl bitPosition)
+			}
+
+			return result
+		}
 	}
 
 	enum class Type {
