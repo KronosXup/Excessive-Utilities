@@ -225,6 +225,8 @@ class InversionRitualActor(
 		}
 
 		fun handleDeath(event: LivingDeathEvent) {
+			if (event.isCanceled) return
+
 			val victim = event.entity
 			val killer = event.source.entity as? Player ?: return
 

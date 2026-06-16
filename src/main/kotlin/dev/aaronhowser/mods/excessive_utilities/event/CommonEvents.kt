@@ -2,6 +2,7 @@ package dev.aaronhowser.mods.excessive_utilities.event
 
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isItem
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
+import dev.aaronhowser.mods.excessive_utilities.actor.InversionRitualActor
 import dev.aaronhowser.mods.excessive_utilities.attachment.SoulDebt
 import dev.aaronhowser.mods.excessive_utilities.block.AngelBlock
 import dev.aaronhowser.mods.excessive_utilities.block_entity.*
@@ -387,6 +388,7 @@ object CommonEvents {
 	fun onEntityDeath(event: LivingDeathEvent) {
 		DivisionSigilActivation.handleEntityDeath(event)
 		DivisionSigilInversion.handleEntityDeath(event)
+		InversionRitualActor.handleDeath(event)
 	}
 
 	@SubscribeEvent
