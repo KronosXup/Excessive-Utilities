@@ -21,12 +21,11 @@ object ModPlacedFeatures {
 				configuredFeatures.getOrThrow(ModConfiguredFeatures.DEEP_DARK_PILLAR),
 				listOf(
 					BiomeFilter.biome(),
-					InSquarePlacement.spread(),
+					CountPlacement.of(1),
 					HeightRangePlacement.uniform(
-						VerticalAnchor.absolute(71),
-						VerticalAnchor.absolute(71),
-					),
-					RarityFilter.onAverageOnceEvery(100)
+						VerticalAnchor.absolute(DeepDarkConstants.FLOOR_TOP + 1),
+						VerticalAnchor.absolute(DeepDarkConstants.FLOOR_TOP + 1),
+					)
 				)
 			)
 		)

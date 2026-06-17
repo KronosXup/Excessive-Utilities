@@ -5,23 +5,20 @@
       "type": "minecraft:biome"
     },
     {
-      "type": "minecraft:in_square"
+      "type": "minecraft:count",
+      "count": 1
     },
     {
       "type": "minecraft:height_range",
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 71
+          "absolute": 63
         },
         "min_inclusive": {
-          "absolute": 71
+          "absolute": 63
         }
       }
-    },
-    {
-      "type": "minecraft:rarity_filter",
-      "chance": 100
     }
   ]
 }
