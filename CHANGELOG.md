@@ -1,3 +1,9 @@
+# 1.7.0
+
+### Added
+
+- The Deep Dark dimension!
+
 # 1.6.0
 
 ### Fixed
@@ -15,7 +21,7 @@
 - Overhauled Cursed Earth
 	- Massive improvements to the code
 	- Lights with Soul Fire instead of Fire
-    - Lights on fire when exposed to sunlight (configurable)
+	- Lights on fire when exposed to sunlight (configurable)
 	- Mobs now spawn as Cursed
 		- Configurable boosts to damage and speed
 		- They also render as near fully dark
