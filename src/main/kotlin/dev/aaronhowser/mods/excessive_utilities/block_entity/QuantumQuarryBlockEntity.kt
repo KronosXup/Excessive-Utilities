@@ -143,6 +143,7 @@ class QuantumQuarryBlockEntity(
 
 	private var progressThroughBlock = 0.0
 	private var feProgress = 0.0
+	private var targetScansRemainingThisTick = 0
 
 	private fun progressMine(miningDimensionLevel: ServerLevel) {
 		val fePerBlock = ServerConfig.CONFIG.quantumQuarryFePerBlock.get()
@@ -161,15 +162,18 @@ class QuantumQuarryBlockEntity(
 			}
 		}
 
-		while (progressThroughBlock >= 1.0) {
-			progressThroughBlock -= 1.0
-			amountBlocksBroken++
+		targetScansRemainingThisTick = MAX_TARGET_SCANS_PER_TICK
 
-			val target = targetBlockPos ?: return
+		while (progressThroughBlock >= 1.0) {
+			val target = getMineableTarget(miningDimensionLevel) ?: return
+
 			val drops = gatherDrops(miningDimensionLevel, target)
 			for (drop in drops) {
 				bufferContainer.addItem(drop)
 			}
+
+			progressThroughBlock -= 1.0
+			amountBlocksBroken++
 
 			feProgress += fePerBlock
 			val feToExtract = Mth.floor(feProgress)
@@ -223,49 +227,78 @@ class QuantumQuarryBlockEntity(
 		return !unbreakable
 	}
 
+	private fun getMineableTarget(miningDimensionLevel: ServerLevel): BlockPos? {
+		val target = targetBlockPos ?: return null
+		if (canQuarryMineBlock(miningDimensionLevel, target)) return target
+
+		if (!advanceTarget(miningDimensionLevel, includeCurrent = true)) return null
+		return targetBlockPos
+	}
+
 	// Start at the top of the chunk's minimum corner,
 	// and then mine downwards until it hits bedrock.
 	// Then do +1 to the X, and repeat until at max X.
 	// Go back to minX, then do +1 to Z, and repeat until at max Z.
 	// Then pick a new chunk and repeat.
-	private fun advanceTarget(miningDimensionLevel: ServerLevel) {
-		val currentChunk = targetChunk ?: return
-		val currentTarget = targetBlockPos ?: return
+	private fun advanceTarget(
+		miningDimensionLevel: ServerLevel,
+		includeCurrent: Boolean = false
+	): Boolean {
+		val currentChunk = targetChunk ?: return false
+		val currentTarget = targetBlockPos ?: return false
 
 		val xBounds = currentChunk.minBlockX..currentChunk.maxBlockX
 		val zBounds = currentChunk.minBlockZ..currentChunk.maxBlockZ
+		val topY = miningDimensionLevel.maxBuildHeight - 1
 
-		fun getNextPos(currentPos: BlockPos): BlockPos? {
-			return when {
-				currentPos.y > miningDimensionLevel.minBuildHeight ->
-					currentPos.below()
+		fun moveNextPos(currentPos: BlockPos.MutableBlockPos): Boolean {
+			when {
+				currentPos.y > miningDimensionLevel.minBuildHeight -> {
+					currentPos.move(Direction.DOWN)
+				}
 
-				currentPos.x < currentChunk.maxBlockX ->
-					BlockPos(currentPos.x + 1, miningDimensionLevel.maxBuildHeight, currentPos.z)
+				currentPos.x < currentChunk.maxBlockX -> {
+					currentPos.set(currentPos.x + 1, topY, currentPos.z)
+				}
 
-				currentPos.z < currentChunk.maxBlockZ ->
-					BlockPos(currentChunk.minBlockX, miningDimensionLevel.maxBuildHeight, currentPos.z + 1)
+				currentPos.z < currentChunk.maxBlockZ -> {
+					currentPos.set(currentChunk.minBlockX, topY, currentPos.z + 1)
+				}
 
-				else -> null
+				else -> {
+					return false
+				}
 			}
+
+			return true
 		}
 
-		var nextPos = getNextPos(currentTarget)
+		val nextPos = currentTarget.mutable()
+		if (!includeCurrent && !moveNextPos(nextPos)) {
+			targetBlockPos = null
+			return false
+		}
 
-		while (nextPos != null) {
+		while (targetScansRemainingThisTick > 0) {
+			targetScansRemainingThisTick--
+
 			if (nextPos.x !in xBounds || nextPos.z !in zBounds) {
 				break
 			}
 
 			if (canQuarryMineBlock(miningDimensionLevel, nextPos)) {
 				targetBlockPos = nextPos
-				return
+				return true
 			}
 
-			nextPos = getNextPos(nextPos)
+			if (!moveNextPos(nextPos)) {
+				targetBlockPos = null
+				return false
+			}
 		}
 
-		targetBlockPos = null
+		targetBlockPos = nextPos
+		return false
 	}
 
 	private fun targetNewChunk(miningDimensionLevel: ServerLevel) {
@@ -281,7 +314,7 @@ class QuantumQuarryBlockEntity(
 
 		val filteredBiome = getBiomeFilter().get(ModDataComponents.BIOME)
 		if (filteredBiome != null) {
-			val referencePos = nextChunkPos.getBlockAt(0, 0, 0)
+			val referencePos = nextChunkPos.getBlockAt(8, 0, 8)
 			val nearestBiome = miningDimensionLevel
 				.findClosestBiome3d(
 					{ holder -> holder.isHolder(filteredBiome) },
@@ -300,9 +333,11 @@ class QuantumQuarryBlockEntity(
 		targetChunk = nextChunkPos
 		targetBlockPos = BlockPos(
 			nextChunkPos.minBlockX,
-			miningDimensionLevel.maxBuildHeight,
+			miningDimensionLevel.maxBuildHeight - 1,
 			nextChunkPos.minBlockZ
 		)
+		miningDimensionLevel.setChunkForced(nextChunkPos.x, nextChunkPos.z, true)
+		setChanged()
 	}
 
 	private fun initFakePlayer() {
@@ -438,6 +473,8 @@ class QuantumQuarryBlockEntity(
 		const val PROGRESS_PERCENT_DATA_INDEX = 4
 		const val AMOUNT_BLOCKS_BROKEN_DATA_INDEX = 5
 		const val BIOME_ID_DATA_INDEX = 6
+
+		const val MAX_TARGET_SCANS_PER_TICK = 4096
 
 		val LEVEL_KEY: ResourceKey<Level> =
 			ResourceKey.create(Registries.DIMENSION, ExcessiveUtilities.modResource("quantum_quarry"))
