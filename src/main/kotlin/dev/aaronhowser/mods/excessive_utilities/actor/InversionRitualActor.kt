@@ -12,6 +12,7 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMessageLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModEntityTypeTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.datamap.InversionRitualEnemyWeight
 import dev.aaronhowser.mods.excessive_utilities.handler.CurseHandler
+import dev.aaronhowser.mods.excessive_utilities.handler.division_sigil.DivisionSigilInversion
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
@@ -62,7 +63,7 @@ class InversionRitualActor(
 		val player = getPlayer()
 
 		if (player == null) {
-			cancel()
+			end(success = false)
 			return
 		}
 
@@ -71,7 +72,7 @@ class InversionRitualActor(
 			|| !area.contains(player.position())
 		) {
 			player.tell(ModMessageLang.INVERSION_RITUAL_TOO_FAR.toComponent())
-			cancel()
+			end(success = false)
 			return
 		}
 
@@ -80,7 +81,7 @@ class InversionRitualActor(
 		}
 	}
 
-	private fun cancel() {
+	private fun end(success: Boolean) {
 		markForRemoval()
 
 		val entitiesToRemove = level
@@ -89,6 +90,15 @@ class InversionRitualActor(
 
 		for (entity in entitiesToRemove) {
 			entity.discard()
+		}
+
+		if (success) {
+			val players = level
+				.getEntitiesOfClass(Player::class.java, area)
+
+			for (player in players) {
+				DivisionSigilInversion.invertSigil(player)
+			}
 		}
 	}
 
@@ -214,7 +224,12 @@ class InversionRitualActor(
 		if (killer != getPlayer()) return
 
 		monstersKilled++
+
 		killer.status("$monstersKilled/$requiredKills")
+
+		if (monstersKilled >= requiredKills) {
+			end(success = true)
+		}
 	}
 
 	companion object {

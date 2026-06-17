@@ -2,6 +2,7 @@ package dev.aaronhowser.mods.excessive_utilities.handler.division_sigil
 
 import dev.aaronhowser.mods.aaron.actor.LevelActor.Companion.addLevelActor
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.getDirectionName
+import dev.aaronhowser.mods.aaron.misc.AaronExtensions.getFirstItemStack
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isBlock
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isClientSide
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isEntity
@@ -13,6 +14,7 @@ import dev.aaronhowser.mods.excessive_utilities.datagen.language.ModMessageLang
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModEntityTypeTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.item.DivisionSigilItem
+import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -60,17 +62,15 @@ object DivisionSigilInversion {
 		level.addLevelActor(actor)
 	}
 
+	fun invertSigil(player: Player) {
+		val sigil = findFirstUninvertedSigil(player) ?: return
+		sigil.remove(ModDataComponents.REMAINING_USES)
+	}
+
 	private fun findFirstUninvertedSigil(player: Player): ItemStack? {
-		val allStacks = player.inventory.items + player.inventory.offhand
-
-		for (stack in allStacks) {
-			if (!stack.isItem(ModItems.DIVISION_SIGIL)) continue
-			if (!DivisionSigilItem.isInverted(stack)) {
-				return stack
-			}
+		return player.getFirstItemStack {
+			it.isItem(ModItems.DIVISION_SIGIL) && !DivisionSigilItem.isInverted(it)
 		}
-
-		return null
 	}
 
 	fun findValidBeacon(

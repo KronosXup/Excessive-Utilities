@@ -1,5 +1,6 @@
 package dev.aaronhowser.mods.excessive_utilities.handler.division_sigil
 
+import dev.aaronhowser.mods.aaron.misc.AaronExtensions.allItemStacksSequence
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isBlock
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isClientSide
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isHolder
@@ -56,7 +57,7 @@ object DivisionSigilActivation {
 	}
 
 	private fun findLowestChargeSigil(player: Player): ItemStack? {
-		val allStacks = player.inventory.items + player.inventory.offhand
+		val allStacks = player.allItemStacksSequence()
 
 		var lowestSigil: ItemStack? = null
 		var lowestCharges = Int.MAX_VALUE
