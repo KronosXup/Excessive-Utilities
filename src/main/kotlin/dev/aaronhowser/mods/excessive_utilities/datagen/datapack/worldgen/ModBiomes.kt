@@ -24,11 +24,8 @@ object ModBiomes {
 			configuredCarvers
 		)
 
-		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomeGenerationSettingsBuilder)
-		BiomeDefaultFeatures.addDefaultMonsterRoom(biomeGenerationSettingsBuilder)
 		BiomeDefaultFeatures.addDefaultOres(biomeGenerationSettingsBuilder)
 		BiomeDefaultFeatures.addFossilDecoration(biomeGenerationSettingsBuilder)
-		BiomeDefaultFeatures.addDefaultSprings(biomeGenerationSettingsBuilder)
 
 		val biome = Biome.BiomeBuilder()
 			.hasPrecipitation(false)
@@ -43,12 +40,7 @@ object ModBiomes {
 					.build()
 			)
 			.mobSpawnSettings(
-				MobSpawnSettings.Builder()
-					.apply {
-						BiomeDefaultFeatures.caveSpawns(this)
-						BiomeDefaultFeatures.monsters(this, 95, 5, 100, false)
-					}
-					.build()
+				MobSpawnSettings.Builder().build()
 			)
 			.generationSettings(
 				biomeGenerationSettingsBuilder.build()
