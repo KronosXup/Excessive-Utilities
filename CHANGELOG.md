@@ -22,6 +22,7 @@
 		- Also added a command to set an entity to be Cursed or not
 - Mobs spawned by the Resturbed Mob Spawner also now spawn Cursed
 - Transfer Nodes now cache their shape, since building it was very slow
+- Hopefully somewhat improved performance of the Quantum Quarry
 
 # 1.5.0
 
