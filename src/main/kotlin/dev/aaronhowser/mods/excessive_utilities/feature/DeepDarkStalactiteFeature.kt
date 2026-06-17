@@ -66,12 +66,12 @@ class DeepDarkStalactiteFeature : Feature<NoneFeatureConfiguration>(NoneFeatureC
 	}
 
 	companion object {
-		const val STALACTITE_CHANCE = 0.86f
-		const val LONG_STALACTITE_CHANCE = 0.22f
+		const val STALACTITE_CHANCE = 0.3f
+		const val LONG_STALACTITE_CHANCE = 0.05f
 
 		const val MIN_LENGTH = 4
-		const val BASE_LENGTH_RANGE = 15
-		const val LONG_EXTRA_LENGTH_RANGE = 30
+		const val BASE_LENGTH_RANGE = 7
+		const val LONG_EXTRA_LENGTH_RANGE = 12
 
 		const val MIN_CLEARANCE_ABOVE_FLOOR = 10
 		const val CEILING_SCAN_ABOVE = 24
