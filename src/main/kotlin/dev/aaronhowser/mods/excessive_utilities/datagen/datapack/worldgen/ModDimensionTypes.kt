@@ -57,7 +57,7 @@ object ModDimensionTypes {
 				true,
 				DeepDarkConstants.MIN_Y,
 				DeepDarkConstants.HEIGHT,
-				DeepDarkConstants.HEIGHT,
+				319,
 				BlockTags.INFINIBURN_OVERWORLD,
 				BuiltinDimensionTypes.OVERWORLD_EFFECTS,
 				0f,
