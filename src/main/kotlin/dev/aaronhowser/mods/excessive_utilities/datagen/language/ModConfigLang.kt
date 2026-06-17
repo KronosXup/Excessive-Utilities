@@ -9,6 +9,7 @@ object ModConfigLang {
 			add("excessive_utilities.configuration.chicken_wing_ring", "Chicken Wing Ring")
 			add("excessive_utilities.configuration.healingAxeSaturationAmount", "Healing Axe Saturation Amount")
 			add("excessive_utilities.configuration.cursedEarthMaxSpawnedMobs", "Cursed Earth Max Spawned Mobs")
+			add("excessive_utilities.configuration.inversionRitualMaxSpawnedMonsters", "Inversion Ritual Max Spawned Monsters")
 			add("excessive_utilities.configuration.basicFilingCabinetCapacity", "Basic Filing Cabinet Capacity")
 			add("excessive_utilities.configuration.survivalistGeneratorBurnTimeMultiplier", "Survivalist Generator Burn Time Multiplier")
 			add("excessive_utilities.configuration.enderPorcupineMarchTime", "Ender Porcupine March Time (ticks)")

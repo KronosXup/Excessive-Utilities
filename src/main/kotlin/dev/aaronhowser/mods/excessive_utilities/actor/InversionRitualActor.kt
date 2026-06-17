@@ -45,6 +45,7 @@ class InversionRitualActor(
 	private val period: Int = ServerConfig.CONFIG.inversionRitualPeriod.get()
 
 	private fun getSpawnsPer(): Int = ServerConfig.CONFIG.inversionRitualSpawnsPer.get()
+	private fun getMaxSpawnedMonsters(): Int = ServerConfig.CONFIG.inversionRitualMaxSpawnedMonsters.get()
 	private fun getRequiredKills(): Int = ServerConfig.CONFIG.inversionRitualKillsRequired.get()
 
 	private var monstersKilled = 0
@@ -78,7 +79,11 @@ class InversionRitualActor(
 			return
 		}
 
-		for (i in 0 until getSpawnsPer()) {
+		val spaceForMonsters = getMaxSpawnedMonsters() - getCurrentMonsterCount()
+		if (spaceForMonsters <= 0) return
+
+		val monstersToSpawn = min(getSpawnsPer(), spaceForMonsters)
+		for (i in 0 until monstersToSpawn) {
 			spawnMonster(player)
 		}
 	}
@@ -159,6 +164,10 @@ class InversionRitualActor(
 		}
 
 		serverLevel.addFreshEntity(mob)
+	}
+
+	private fun getCurrentMonsterCount(): Int {
+		return level.getEntitiesOfClass(LivingEntity::class.java, area).count(CurseHandler::isCursed)
 	}
 
 	private fun findMobSpawnLocation(

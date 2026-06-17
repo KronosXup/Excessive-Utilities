@@ -572,6 +572,7 @@
   "excessive_utilities.configuration.heatingCoilBurnTime": "Heating Coil Burn Time",
   "excessive_utilities.configuration.heatingCoilMaxEnergy": "Heating Coil Max Energy",
   "excessive_utilities.configuration.heating_coil": "Heating Coil",
+  "excessive_utilities.configuration.inversionRitualMaxSpawnedMonsters": "Inversion Ritual Max Spawned Monsters",
   "excessive_utilities.configuration.ironDrumCapacity": "Iron Drum Capacity",
   "excessive_utilities.configuration.isWateringCanBreakable": "Is Watering Can Breakable",
   "excessive_utilities.configuration.lavaMillGeneration": "Lava Mill Generation",

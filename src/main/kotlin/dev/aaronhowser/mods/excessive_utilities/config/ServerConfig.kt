@@ -113,6 +113,7 @@ class ServerConfig(
 
 	lateinit var inversionRitualPeriod: ModConfigSpec.IntValue
 	lateinit var inversionRitualSpawnsPer: ModConfigSpec.IntValue
+	lateinit var inversionRitualMaxSpawnedMonsters: ModConfigSpec.IntValue
 	lateinit var inversionRitualKillsRequired: ModConfigSpec.IntValue
 
 	lateinit var qedRadius: ModConfigSpec.IntValue
@@ -528,6 +529,10 @@ class ServerConfig(
 				inversionRitualSpawnsPer = builder
 					.comment("How many monsters are spawned in each wave.")
 					.defineInRange("inversionRitualSpawnsPer", 1, 1, Int.MAX_VALUE)
+
+				inversionRitualMaxSpawnedMonsters = builder
+					.comment("The maximum number of monsters the Ritual can have spawned at once.")
+					.defineInRange("inversionRitualMaxSpawnedMonsters", 100, 1, Int.MAX_VALUE)
 
 				inversionRitualKillsRequired = builder
 					.comment("How many monsters must be killed to complete the Ritual.")
