@@ -196,8 +196,8 @@ class DeepDarkHandler : SavedData() {
 		}
 
 		fun get(level: ServerLevel): DeepDarkHandler {
-			if (level != level.server.overworld()) {
-				return get(level.server.overworld())
+			if (level.dimension() != DeepDarkConstants.LEVEL_KEY) {
+				return get(getDeepDarkLevel(level))
 			}
 
 			val storage = level.dataStorage
