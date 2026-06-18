@@ -1,15 +1,16 @@
 {
-	"required": true,
-	"minVersion": "0.8",
-	"package": "dev.aaronhowser.mods.excessive_utilities.mixin",
-	"mixins": [
-		"AbstractFurnaceBlockEntityMixin",
-		"LevelMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"client": [
-		"LivingEntityRendererMixin"
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.aaronhowser.mods.excessive_utilities.mixin",
+  "mixins": [
+    "AbstractFurnaceBlockEntityMixin",
+    "DiggingMixin",
+    "LevelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "LivingEntityRendererMixin"
 	]
 }

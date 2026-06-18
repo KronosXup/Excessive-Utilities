@@ -40,12 +40,6 @@ object ModItems : AaronItemRegistry() {
 		basic("lunar_reactive_dust")
 	val MOON_STONE: DeferredItem<Item> =
 		basic("moon_stone")
-	val WARDENS_WAKE: DeferredItem<Item> =
-		basic("wardens_wake")
-
-	@JvmField
-	val RED_COAL: DeferredItem<RedCoalItem> =
-		register("red_coal", ::RedCoalItem, RedCoalItem.DEFAULT_PROPERTIES)
 	val REDSTONE_GEAR: DeferredItem<Item> =
 		basic("redstone_gear")
 	val RESONATING_REDSTONE_CRYSTAL: DeferredItem<Item> =
@@ -62,6 +56,14 @@ object ModItems : AaronItemRegistry() {
 		basic("semi_unstable_nugget")
 	val KLEIN_BOTTLE: DeferredItem<Item> =
 		basic("klein_bottle")
+
+	@JvmField
+	val WARDENS_WAKE: DeferredItem<Item> =
+		basic("wardens_wake")
+
+	@JvmField
+	val RED_COAL: DeferredItem<RedCoalItem> =
+		register("red_coal", ::RedCoalItem, RedCoalItem.DEFAULT_PROPERTIES)
 
 	// Tools
 
