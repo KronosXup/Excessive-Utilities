@@ -27,7 +27,7 @@ class MagnumTorchBER(
 		val player = AaronClientUtil.localPlayer ?: return
 		if (!player.isHolding(ModBlocks.MAGNUM_TORCH.asItem())) return
 
-		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.LINES_THROUGH_WALL_RENDER_TYPE)
+		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.linesThroughWalls())
 
 		val radius = ServerConfig.CONFIG.magnumTorchRadius.get().toFloat()
 

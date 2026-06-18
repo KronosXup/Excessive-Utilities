@@ -27,7 +27,7 @@ class ChandelierBER(
 		val player = AaronClientUtil.localPlayer ?: return
 		if (!player.isHolding(ModBlocks.CHANDELIER.asItem())) return
 
-		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.LINES_THROUGH_WALL_RENDER_TYPE)
+		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.linesThroughWalls())
 
 		val radius = ServerConfig.CONFIG.chandelierRadius.get().toFloat()
 

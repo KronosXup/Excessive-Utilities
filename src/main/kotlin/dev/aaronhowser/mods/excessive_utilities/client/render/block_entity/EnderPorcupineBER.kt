@@ -29,7 +29,7 @@ class EnderPorcupineBER(
 		if (!player.isHolding { it.isItem(ModItemTagsProvider.RENDER_ENDER_PORCUPINE_WHILE_HOLDING) }) return
 
 		val offset = blockEntity.getCurrentOffset()
-		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.LINES_THROUGH_WALL_RENDER_TYPE)
+		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.linesThroughWalls())
 
 		val x = offset.x.toFloat()
 		val y = offset.y.toFloat()

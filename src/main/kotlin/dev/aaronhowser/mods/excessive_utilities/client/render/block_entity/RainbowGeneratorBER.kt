@@ -1,7 +1,7 @@
 package dev.aaronhowser.mods.excessive_utilities.client.render.block_entity
 
 import com.mojang.blaze3d.vertex.PoseStack
-import dev.aaronhowser.mods.aaron.client.render.RenderUtil
+import dev.aaronhowser.mods.aaron.client.render.AaronRenderUtil
 import dev.aaronhowser.mods.aaron.misc.AaronDsls.withPose
 import dev.aaronhowser.mods.excessive_utilities.block.GeneratorBlock
 import dev.aaronhowser.mods.excessive_utilities.block_entity.generator.RainbowGeneratorBlockEntity
@@ -39,7 +39,7 @@ class RainbowGeneratorBER(
 		poseStack.withPose {
 			poseStack.translate(0.5f, 0.5f, 0.5f)
 
-			RenderUtil.renderDragonRays(
+			AaronRenderUtil.renderDragonRays(
 				poseStack = poseStack,
 				time = time,
 				bufferSource = bufferSource,
