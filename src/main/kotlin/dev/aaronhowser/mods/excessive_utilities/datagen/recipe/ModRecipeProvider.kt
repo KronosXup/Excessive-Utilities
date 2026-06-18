@@ -2547,12 +2547,12 @@ class ModRecipeProvider(
 		unstable(ModBlocks.DEEP_DARK_PORTAL)
 			.pattern(
 				"4I4",
-				"I5I",
+				"IWI",
 				"4I4"
 			)
 			.define('I', ModItems.UNSTABLE_INGOT.asIngredient())
 			.define('4', ModBlocks.getCompressedCobblestone(4).asIngredient())
-			.define('5', ModBlocks.getCompressedCobblestone(5).asIngredient())
+			.define('W', ModItems.WARDENS_WAKE.asIngredient())
 			.save(recipeOutput)
 
 		for (color in DyeColor.entries) {

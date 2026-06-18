@@ -5,16 +5,16 @@
       "4": {
         "item": "excessive_utilities:compressed_cobblestone_4"
       },
-      "5": {
-        "item": "excessive_utilities:compressed_cobblestone_5"
-      },
       "I": {
         "item": "excessive_utilities:unstable_ingot"
+      },
+      "W": {
+        "item": "excessive_utilities:wardens_wake"
       }
     },
     "pattern": [
       "4I4",
-      "I5I",
+      "IWI",
       "4I4"
     ]
   },

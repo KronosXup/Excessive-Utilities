@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-08T02:31:57.5153473	Recipes
+// 1.21.1	2026-06-18T17:06:45.9603915	Recipes
 848f7fcdb4fa78474939b93f0c43703d650abf43 data/excessive_utilities/advancement/recipes/building_blocks/thickened_glass.json
 5544a3880f9cc21b24f3bbd7a0e3125679de74dc data/excessive_utilities/advancement/recipes/crusher/allium_to_magenta_dye.json
 03553dc68b381cde601be45b74fc8784e96887ab data/excessive_utilities/advancement/recipes/crusher/azure_bluet_to_light_gray_dye.json
@@ -1393,7 +1393,7 @@ b8172349b1d470884f0790340809653d5bed300d data/excessive_utilities/recipe/unstabl
 7f3e0de4d4078f401edd0167343b513886feed35 data/excessive_utilities/recipe/unstable/angel_ring_gold.json
 10ddaf846f0d60cd395a57fa9037b132b1c1348a data/excessive_utilities/recipe/unstable/angel_ring_invisible.json
 539915cc474cbcac0ed51d05040fb5b91f88cf1b data/excessive_utilities/recipe/unstable/block_of_unstable_ingot_from_unstable_ingots.json
-f67b47ea63bc2323efb77854c3f85d45d4a672cb data/excessive_utilities/recipe/unstable/deep_dark_portal.json
+4ca2fc68f6ad02096312d26b587a933ae33e3983 data/excessive_utilities/recipe/unstable/deep_dark_portal.json
 0a2010a432d123185002e663e93fd5218d94da37 data/excessive_utilities/recipe/unstable/destruction_pickaxe.json
 b36a642ba9e035b26c65ca96f180a02b46d94272 data/excessive_utilities/recipe/unstable/erosion_shovel.json
 3194006bc96a643eb22fce3a9751af87383940fa data/excessive_utilities/recipe/unstable/etheric_sword.json
