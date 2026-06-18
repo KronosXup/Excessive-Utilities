@@ -1,7 +1,10 @@
 package dev.aaronhowser.mods.excessive_utilities.feature
 
 import net.minecraft.core.BlockPos
-import net.minecraft.util.RandomSource
+import net.minecraft.world.level.ChunkPos
+import net.minecraft.world.level.levelgen.LegacyRandomSource
+import net.minecraft.world.level.levelgen.WorldgenRandom
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType
 import kotlin.math.sqrt
 
 object DeepDarkAncientCityPlacement {
@@ -14,7 +17,7 @@ object DeepDarkAncientCityPlacement {
 
 		for (nearbyRegionX in regionX - 1..regionX + 1) {
 			for (nearbyRegionZ in regionZ - 1..regionZ + 1) {
-				val cityCenter = getCityCenter(seed, nearbyRegionX, nearbyRegionZ)
+				val cityCenter = getCityCenterForSpreadRegion(seed, nearbyRegionX, nearbyRegionZ)
 				val dx = cityCenter.x - x
 				val dz = cityCenter.z - z
 				val distance = sqrt((dx * dx + dz * dz).toDouble())
@@ -26,20 +29,26 @@ object DeepDarkAncientCityPlacement {
 		return false
 	}
 
-	private fun getCityCenter(seed: Long, regionX: Int, regionZ: Int): BlockPos {
-		val random = RandomSource.create(seed + regionX * REGION_SEED_X + regionZ * REGION_SEED_Z + SALT)
-		val chunkX = regionX * SPACING + random.nextInt(SPACING - SEPARATION)
-		val chunkZ = regionZ * SPACING + random.nextInt(SPACING - SEPARATION)
+	private fun getCityCenterForSpreadRegion(seed: Long, spreadRegionX: Int, spreadRegionZ: Int): BlockPos {
+		val chunkPos = getPotentialStructureChunk(seed, spreadRegionX, spreadRegionZ)
 
-		return BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8)
+		return BlockPos(chunkPos.x * 16 + 8, 0, chunkPos.z * 16 + 8)
+	}
+
+	private fun getPotentialStructureChunk(seed: Long, spreadRegionX: Int, spreadRegionZ: Int): ChunkPos {
+		val random = WorldgenRandom(LegacyRandomSource(0L))
+		random.setLargeFeatureWithSalt(seed, spreadRegionX, spreadRegionZ, SALT)
+		val randomRange = SPACING - SEPARATION
+		val chunkX = spreadRegionX * SPACING + RandomSpreadType.LINEAR.evaluate(random, randomRange)
+		val chunkZ = spreadRegionZ * SPACING + RandomSpreadType.LINEAR.evaluate(random, randomRange)
+
+		return ChunkPos(chunkX, chunkZ)
 	}
 
 	const val SPACING = 96
 	const val SEPARATION = 72
-	const val SALT = 18023247L
+	const val SALT = 18023247
 
-	private const val REGION_SEED_X = 341873128712L
-	private const val REGION_SEED_Z = 132897987541L
 	private const val RESERVED_RADIUS = 144
 
 }
