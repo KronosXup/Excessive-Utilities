@@ -12,13 +12,22 @@ object ModDamageTypeProvider {
 		ResourceKey.create(Registries.DAMAGE_TYPE, ExcessiveUtilities.modResource(name))
 
 	val DOOM = createRk("doom")
+	val DARKNESS = createRk("darkness")
 
 	fun bootstrap(context: BootstrapContext<DamageType>) {
 		context.register(
 			DOOM,
 			DamageType(
 				"eu_doom",
-				0.0f
+				0f
+			)
+		)
+
+		context.register(
+			DARKNESS,
+			DamageType(
+				"eu_darkness",
+				0f
 			)
 		)
 	}

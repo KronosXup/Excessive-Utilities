@@ -17,34 +17,34 @@ class ModDamageTypeTagsProvider(
 
 	override fun addTags(provider: HolderLookup.Provider) {
 		tag(DamageTypeTags.NO_ANGER)
-			.add(ModDamageTypeProvider.DOOM)
+			.add(ModDamageTypeProvider.DOOM, ModDamageTypeProvider.DARKNESS)
 
 		tag(DamageTypeTags.NO_IMPACT)
-			.add(ModDamageTypeProvider.DOOM)
+			.add(ModDamageTypeProvider.DOOM, ModDamageTypeProvider.DARKNESS)
 
 		tag(DamageTypeTags.NO_KNOCKBACK)
-			.add(ModDamageTypeProvider.DOOM)
+			.add(ModDamageTypeProvider.DOOM, ModDamageTypeProvider.DARKNESS)
 
 		tag(DamageTypeTags.BYPASSES_ARMOR)
-			.add(ModDamageTypeProvider.DOOM)
+			.add(ModDamageTypeProvider.DOOM, ModDamageTypeProvider.DARKNESS)
 
 		tag(DamageTypeTags.BYPASSES_ENCHANTMENTS)
-			.add(ModDamageTypeProvider.DOOM)
+			.add(ModDamageTypeProvider.DOOM, ModDamageTypeProvider.DARKNESS)
 
 		tag(DamageTypeTags.BYPASSES_EFFECTS)
-			.add(ModDamageTypeProvider.DOOM)
+			.add(ModDamageTypeProvider.DOOM, ModDamageTypeProvider.DARKNESS)
 
 		tag(DamageTypeTags.BYPASSES_INVULNERABILITY)
 			.add(ModDamageTypeProvider.DOOM)
 
 		tag(DamageTypeTags.BYPASSES_SHIELD)
-			.add(ModDamageTypeProvider.DOOM)
+			.add(ModDamageTypeProvider.DOOM, ModDamageTypeProvider.DARKNESS)
 
 		tag(DamageTypeTags.BYPASSES_COOLDOWN)
-			.add(ModDamageTypeProvider.DOOM)
+			.add(ModDamageTypeProvider.DOOM, ModDamageTypeProvider.DARKNESS)
 
 		tag(DamageTypeTags.BYPASSES_WOLF_ARMOR)
-			.add(ModDamageTypeProvider.DOOM)
+			.add(ModDamageTypeProvider.DOOM, ModDamageTypeProvider.DARKNESS)
 	}
 
 }
