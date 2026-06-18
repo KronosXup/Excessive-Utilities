@@ -2,7 +2,7 @@ package dev.aaronhowser.mods.excessive_utilities.client.render
 
 import com.mojang.blaze3d.vertex.PoseStack
 import dev.aaronhowser.mods.aaron.client.AaronClientUtil
-import dev.aaronhowser.mods.aaron.client.render.AaronRenderTypes
+import dev.aaronhowser.mods.aaron.client.render.AaronRenderUtil
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isItem
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.toVec3
 import dev.aaronhowser.mods.excessive_utilities.item.BuildersWandItem
@@ -80,17 +80,14 @@ object WandRenderer {
 			amountCanPlace
 		)
 
-		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.linesThroughWalls())
-
 		for (pos in positions) {
-			val offset = cameraPos.vectorTo(pos.toVec3()).toVector3f()
+			val offset = cameraPos.vectorTo(pos.toVec3())
 
-			RenderUtil.box(
+			AaronRenderUtil.renderCubeWireframeThroughWalls(
 				poseStack,
-				linesConsumer,
 				offset.x, offset.y, offset.z,
 				offset.x + 1, offset.y + 1, offset.z + 1,
-				r = 1f, g = 1f, b = 1f, a = 0.8f
+				color = 0xCCFFFFFF.toInt()
 			)
 		}
 
@@ -121,17 +118,14 @@ object WandRenderer {
 			amount
 		)
 
-		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.linesThroughWalls())
-
 		for (pos in positions) {
-			val offset = cameraPos.vectorTo(pos.toVec3()).toVector3f()
+			val offset = cameraPos.vectorTo(pos.toVec3())
 
-			RenderUtil.box(
+			AaronRenderUtil.renderCubeWireframeThroughWalls(
 				poseStack,
-				linesConsumer,
 				offset.x, offset.y, offset.z,
 				offset.x + 1, offset.y + 1, offset.z + 1,
-				r = 1f, g = 0.5f, b = 0.5f, a = 0.8f
+				color = 0xCCFF8080.toInt()
 			)
 		}
 

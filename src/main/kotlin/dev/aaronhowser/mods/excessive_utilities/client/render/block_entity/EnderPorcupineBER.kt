@@ -2,11 +2,9 @@ package dev.aaronhowser.mods.excessive_utilities.client.render.block_entity
 
 import com.mojang.blaze3d.vertex.PoseStack
 import dev.aaronhowser.mods.aaron.client.AaronClientUtil
-import dev.aaronhowser.mods.aaron.client.render.AaronRenderTypes
-import dev.aaronhowser.mods.aaron.misc.ARGB
+import dev.aaronhowser.mods.aaron.client.render.AaronRenderUtil
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isItem
 import dev.aaronhowser.mods.excessive_utilities.block_entity.EnderPorcupineBlockEntity
-import dev.aaronhowser.mods.excessive_utilities.client.render.RenderUtil
 import dev.aaronhowser.mods.excessive_utilities.config.ClientConfig
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
 import net.minecraft.client.renderer.MultiBufferSource
@@ -29,28 +27,18 @@ class EnderPorcupineBER(
 		if (!player.isHolding { it.isItem(ModItemTagsProvider.RENDER_ENDER_PORCUPINE_WHILE_HOLDING) }) return
 
 		val offset = blockEntity.getCurrentOffset()
-		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.linesThroughWalls())
 
-		val x = offset.x.toFloat()
-		val y = offset.y.toFloat()
-		val z = offset.z.toFloat()
+		val x = offset.x.toDouble()
+		val y = offset.y.toDouble()
+		val z = offset.z.toDouble()
 
 		val targetColor = ClientConfig.CONFIG.enderPorcupineCurrentTargetColor.get()
 
-		val targetArgb = ARGB.fromInt(targetColor)
-		val (taInt, trInt, tgInt, tbInt) = targetArgb
-
-		val targetA = taInt / 255f
-		val targetR = trInt / 255f
-		val targetG = tgInt / 255f
-		val targetB = tbInt / 255f
-
-		RenderUtil.box(
+		AaronRenderUtil.renderCubeWireframeThroughWalls(
 			poseStack,
-			linesConsumer,
 			x, y, z,
-			x + 1f, y + 1f, z + 1f,
-			targetR, targetG, targetB, targetA
+			x + 1.0, y + 1.0, z + 1.0,
+			targetColor
 		)
 
 		val minOffset = blockEntity.minimumOffset
@@ -58,20 +46,11 @@ class EnderPorcupineBER(
 
 		val searchVolumeColor = ClientConfig.CONFIG.enderPorcupineSearchVolumeColor.get()
 
-		val fullArgb = ARGB.fromInt(searchVolumeColor)
-		val (faInt, frInt, fgInt, fbInt) = fullArgb
-
-		val fullA = faInt / 255f
-		val fullR = frInt / 255f
-		val fullG = fgInt / 255f
-		val fullB = fbInt / 255f
-
-		RenderUtil.box(
+		AaronRenderUtil.renderCubeWireframeThroughWalls(
 			poseStack,
-			linesConsumer,
-			minOffset.x.toFloat(), minOffset.y.toFloat(), minOffset.z.toFloat(),
-			maxOffset.x.toFloat() + 1f, maxOffset.y.toFloat() + 1f, maxOffset.z.toFloat() + 1f,
-			fullR, fullG, fullB, fullA
+			minOffset.x.toDouble(), minOffset.y.toDouble(), minOffset.z.toDouble(),
+			maxOffset.x.toDouble() + 1.0, maxOffset.y.toDouble() + 1.0, maxOffset.z.toDouble() + 1.0,
+			searchVolumeColor
 		)
 
 	}

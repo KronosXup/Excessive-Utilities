@@ -5,7 +5,6 @@ import dev.aaronhowser.mods.aaron.client.AaronClientUtil
 import dev.aaronhowser.mods.aaron.client.render.AaronRenderUtil
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.getPovResult
 import dev.aaronhowser.mods.excessive_utilities.block_entity.EnderCollectorBlockEntity
-import dev.aaronhowser.mods.excessive_utilities.client.render.RenderUtil
 import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider

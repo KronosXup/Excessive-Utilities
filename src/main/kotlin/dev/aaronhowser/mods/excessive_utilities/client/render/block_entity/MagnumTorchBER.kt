@@ -2,9 +2,8 @@ package dev.aaronhowser.mods.excessive_utilities.client.render.block_entity
 
 import com.mojang.blaze3d.vertex.PoseStack
 import dev.aaronhowser.mods.aaron.client.AaronClientUtil
-import dev.aaronhowser.mods.aaron.client.render.AaronRenderTypes
+import dev.aaronhowser.mods.aaron.client.render.AaronRenderUtil
 import dev.aaronhowser.mods.excessive_utilities.block_entity.MagnumTorchBlockEntity
-import dev.aaronhowser.mods.excessive_utilities.client.render.RenderUtil
 import dev.aaronhowser.mods.excessive_utilities.config.ServerConfig
 import dev.aaronhowser.mods.excessive_utilities.registry.ModBlocks
 import net.minecraft.client.renderer.MultiBufferSource
@@ -27,9 +26,7 @@ class MagnumTorchBER(
 		val player = AaronClientUtil.localPlayer ?: return
 		if (!player.isHolding(ModBlocks.MAGNUM_TORCH.asItem())) return
 
-		val linesConsumer = bufferSource.getBuffer(AaronRenderTypes.linesThroughWalls())
-
-		val radius = ServerConfig.CONFIG.magnumTorchRadius.get().toFloat()
+		val radius = ServerConfig.CONFIG.magnumTorchRadius.get().toDouble()
 
 		val minX = -radius
 		val minY = -radius
@@ -38,12 +35,11 @@ class MagnumTorchBER(
 		val maxY = radius + 1
 		val maxZ = radius + 1
 
-		RenderUtil.box(
+		AaronRenderUtil.renderCubeWireframeThroughWalls(
 			poseStack,
-			linesConsumer,
 			minX, minY, minZ,
 			maxX, maxY, maxZ,
-			1f, 1f, 1f, 0.4f
+			color = 0x66FFFFFF
 		)
 	}
 
