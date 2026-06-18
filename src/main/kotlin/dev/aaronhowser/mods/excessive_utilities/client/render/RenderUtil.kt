@@ -2,6 +2,7 @@ package dev.aaronhowser.mods.excessive_utilities.client.render
 
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
+import net.minecraft.client.renderer.LightTexture
 import kotlin.math.sqrt
 
 object RenderUtil {
@@ -11,7 +12,8 @@ object RenderUtil {
 		vertexConsumer: VertexConsumer,
 		minX: Float, minY: Float, minZ: Float,
 		maxX: Float, maxY: Float, maxZ: Float,
-		r: Float, g: Float, b: Float, a: Float
+		r: Float, g: Float, b: Float, a: Float,
+		packedLight: Int = LightTexture.FULL_BRIGHT
 	) {
 		val pose = poseStack.last()
 
@@ -50,7 +52,8 @@ object RenderUtil {
 				vertexConsumer, pose,
 				start[0], start[1], start[2],
 				end[0], end[1], end[2],
-				r, g, b, a
+				r, g, b, a,
+				packedLight
 			)
 		}
 
@@ -61,7 +64,8 @@ object RenderUtil {
 		pose: PoseStack.Pose,
 		x1: Float, y1: Float, z1: Float,
 		x2: Float, y2: Float, z2: Float,
-		r: Float, g: Float, b: Float, a: Float
+		r: Float, g: Float, b: Float, a: Float,
+		packedLight: Int = LightTexture.FULL_BRIGHT
 	) {
 		var dx = x2 - x1
 		var dy = y2 - y1
@@ -77,11 +81,13 @@ object RenderUtil {
 		vertexConsumer
 			.addVertex(pose, x1, y1, z1)
 			.setColor(r, g, b, a)
+			.setLight(packedLight)
 			.setNormal(pose, dx, dy, dz)
 
 		vertexConsumer
 			.addVertex(pose, x2, y2, z2)
 			.setColor(r, g, b, a)
+			.setLight(packedLight)
 			.setNormal(pose, dx, dy, dz)
 	}
 
