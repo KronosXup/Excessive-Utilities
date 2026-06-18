@@ -19,7 +19,8 @@ object ModRegistries {
 			ModMenuTypes.MENU_TYPE_REGISTRY,
 			ModAttachmentTypes.ATTACHMENT_TYPE_REGISTRY,
 			ModPotions.POTION_REGISTRY,
-			ModFeatures.FEATURE_REGISTRY
+			ModFeatures.FEATURE_REGISTRY,
+			ModAttributes.ATTRIBUTE_REGISTRY
 		)
 
 		for (registry in registries) {

@@ -47,8 +47,8 @@ object ModMenuLang {
 	const val SNOW_GLOBE_READY = "tooltip.excessive_utilities.magical_snow_globe_ready"
 	const val ATHENA_COMPATIBLE = "tooltip.excessive_utilities.athena_compatible"
 	const val LASSO_ENTITY_WITH_NAME = "tooltip.excessive_utilities.lasso.entity_with_name"
-
 	const val DEMON_CRAFTING = "container.excessive_utilities.demon_crafting"
+	const val SOUL_RENDING = "attribute.name.excessive_utilities.soul_rending"
 
 	fun add(provider: ModLanguageProvider) {
 		provider.apply {
@@ -116,6 +116,7 @@ object ModMenuLang {
 			add(ATHENA_COMPATIBLE, "Install Athena for connected textures!")
 
 			add(DEMON_CRAFTING, "Get by throwing the Golden form into Lava while in the Nether!")
+			add(SOUL_RENDING, "Soul Rending")
 		}
 	}
 
