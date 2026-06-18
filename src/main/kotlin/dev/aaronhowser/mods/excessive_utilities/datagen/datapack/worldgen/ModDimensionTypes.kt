@@ -15,7 +15,7 @@ object ModDimensionTypes {
 	val THE_LAST_MILLENNIUM: ResourceKey<DimensionType> =
 		rk("the_last_millennium")
 	val DEEP_DARK: ResourceKey<DimensionType> =
-		rk("deep_dark")
+		rk(DeepDarkConstants.NAME)
 
 	fun bootstrap(context: BootstrapContext<DimensionType>) {
 		context.register(

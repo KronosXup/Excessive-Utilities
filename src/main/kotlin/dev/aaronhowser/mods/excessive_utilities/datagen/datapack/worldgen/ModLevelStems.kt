@@ -24,7 +24,7 @@ object ModLevelStems {
 	val THE_LAST_MILLENNIUM: ResourceKey<LevelStem> =
 		rk("the_last_millennium")
 	val DEEP_DARK =
-		rk("deep_dark")
+		rk(DeepDarkConstants.NAME)
 
 	fun bootstrap(context: BootstrapContext<LevelStem>) {
 		val dimensionTypeLookup =

@@ -13,6 +13,7 @@ import dev.aaronhowser.mods.excessive_utilities.block_entity.generator.MagmaticG
 import dev.aaronhowser.mods.excessive_utilities.command.ModCommands
 import dev.aaronhowser.mods.excessive_utilities.config.ServerConfig
 import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.ModDamageTypeProvider
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.DeepDarkConstants
 import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModDimensionTypes
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.datamap.InversionRitualEnemyWeight
@@ -439,7 +440,7 @@ object CommonEvents {
 	fun afterPlayerTick(event: PlayerTickEvent.Post) {
 		val player = event.entity
 
-		if (player is ServerPlayer && player.level().dimension() === ModDimensionTypes.DEEP_DARK) {
+		if (player is ServerPlayer && player.level().dimension() == DeepDarkConstants.LEVEL_KEY) {
 			handleGrue(player)
 		}
 
