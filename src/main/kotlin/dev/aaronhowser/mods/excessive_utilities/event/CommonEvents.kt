@@ -11,6 +11,9 @@ import dev.aaronhowser.mods.excessive_utilities.block_entity.base.generator.Gene
 import dev.aaronhowser.mods.excessive_utilities.block_entity.generator.ItemAndFluidInputDataDrivenGeneratorBlockEntity
 import dev.aaronhowser.mods.excessive_utilities.block_entity.generator.MagmaticGeneratorBlockEntity
 import dev.aaronhowser.mods.excessive_utilities.command.ModCommands
+import dev.aaronhowser.mods.excessive_utilities.config.ServerConfig
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.ModDamageTypeProvider
+import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModDimensionTypes
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.datamap.InversionRitualEnemyWeight
 import dev.aaronhowser.mods.excessive_utilities.datamap.NetherLavaDunkConversion
@@ -26,6 +29,7 @@ import dev.aaronhowser.mods.excessive_utilities.handler.rainbow_generator.Rainbo
 import dev.aaronhowser.mods.excessive_utilities.item.*
 import dev.aaronhowser.mods.excessive_utilities.packet.ModPacketHandler
 import dev.aaronhowser.mods.excessive_utilities.registry.*
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.enchantment.Enchantment
@@ -46,6 +50,7 @@ import net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent
 import net.neoforged.neoforge.event.level.BlockDropsEvent
 import net.neoforged.neoforge.event.level.BlockEvent
 import net.neoforged.neoforge.event.tick.EntityTickEvent
+import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import net.neoforged.neoforge.event.tick.ServerTickEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent
@@ -428,6 +433,31 @@ object CommonEvents {
 	@SubscribeEvent
 	fun registerReloadListeners(event: AddReloadListenerEvent) {
 		event.addListener(InversionRitualEnemyWeight.ReloadListener())
+	}
+
+	@SubscribeEvent
+	fun afterPlayerTick(event: PlayerTickEvent.Post) {
+		val player = event.entity
+
+		if (player is ServerPlayer && player.level().dimension() === ModDimensionTypes.DEEP_DARK) {
+			handleGrue(player)
+		}
+
+	}
+
+	private fun handleGrue(player: ServerPlayer) {
+		val interval = ServerConfig.CONFIG.deepDarkDamageInterval.get()
+		val level = player.serverLevel()
+		if (level.gameTime % interval != 0L) return
+
+		val lightLevel = level.getMaxLocalRawBrightness(player.blockPosition())
+		val safeLightLevel = ServerConfig.CONFIG.deepDarkSafeLightLevel.get()
+		if (lightLevel >= safeLightLevel) return
+
+		val damageAmount = ServerConfig.CONFIG.deepDarkDamageAmount.get().toFloat()
+		val damageSource = player.damageSources().source(ModDamageTypeProvider.DARKNESS)
+
+		player.hurt(damageSource, damageAmount)
 	}
 
 }

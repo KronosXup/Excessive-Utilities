@@ -124,6 +124,10 @@ class ServerConfig(
 	lateinit var wirelessFeTransmitterRange: ModConfigSpec.IntValue
 	lateinit var wirelessFeTransmitterRate: ModConfigSpec.IntValue
 
+	lateinit var deepDarkDamageAmount: ModConfigSpec.DoubleValue
+	lateinit var deepDarkDamageInterval: ModConfigSpec.IntValue
+	lateinit var deepDarkSafeLightLevel: ModConfigSpec.IntValue
+
 	init {
 		general()
 
@@ -537,6 +541,20 @@ class ServerConfig(
 				inversionRitualKillsRequired = builder
 					.comment("How many monsters must be killed to complete the Ritual.")
 					.defineInRange("inversionRitualKillsPer", 100, 1, Int.MAX_VALUE)
+			}
+
+			builder.section("deep_dark") {
+				deepDarkDamageAmount = builder
+					.comment("How many points of damage you get from being in darkness in the Deep Dark.")
+					.defineInRange("deepDarkDamageAmount", 1.0, 0.0, Double.MAX_VALUE)
+
+				deepDarkDamageInterval = builder
+					.comment("How many ticks you have to be in darkness in the Deep Dark before getting hurt.")
+					.defineInRange("deepDarkDamageInterval", 100, 0, Int.MAX_VALUE)
+
+				deepDarkSafeLightLevel = builder
+					.comment("What light level provides safety in the Deep Dark.")
+					.defineInRange("deepDarkSafeLightLevel", 4, 0, 15)
 			}
 
 			builder.section("heating_coil") {
