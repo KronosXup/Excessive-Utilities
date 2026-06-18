@@ -97,8 +97,8 @@ object ModPlacedFeatures {
 					RarityFilter.onAverageOnceEvery(67),
 					InSquarePlacement.spread(),
 					HeightRangePlacement.uniform(
-						VerticalAnchor.absolute(DeepDarkConstants.FLOOR_TOP + DeepDarkConstants.BLEND_THICKNESS + 8),
-						VerticalAnchor.absolute(DeepDarkConstants.FLOOR_TOP + DeepDarkConstants.BLEND_THICKNESS + 8),
+						VerticalAnchor.absolute(DeepDarkConstants.FLOOR_TOP),
+						VerticalAnchor.absolute(DeepDarkConstants.FLOOR_TOP + DeepDarkConstants.BLEND_THICKNESS),
 					),
 					BiomeFilter.biome()
 				)
