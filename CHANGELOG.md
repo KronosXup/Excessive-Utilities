@@ -5,6 +5,9 @@
 - The Deep Dark dimension!
 	- Uses Deepslate instead of Stone
 	- Vanilla ores spawn more densely
+	- Added some vanilla Deep Dark stuff as well
+		- Veins of Sculk permeate the dimension
+        - Ancient Cities can spawn rarely
 
 # 1.6.0
 
