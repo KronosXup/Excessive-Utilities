@@ -5,7 +5,6 @@ import net.minecraft.core.registries.Registries
 import net.minecraft.data.worldgen.BootstrapContext
 import net.minecraft.data.worldgen.features.MiscOverworldFeatures
 import net.minecraft.data.worldgen.features.OreFeatures
-import net.minecraft.data.worldgen.placement.PlacementUtils
 import net.minecraft.resources.ResourceKey
 import net.minecraft.util.valueproviders.UniformInt
 import net.minecraft.world.level.levelgen.VerticalAnchor
@@ -97,7 +96,10 @@ object ModPlacedFeatures {
 				listOf(
 					RarityFilter.onAverageOnceEvery(67),
 					InSquarePlacement.spread(),
-					PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+					HeightRangePlacement.uniform(
+						VerticalAnchor.absolute(DeepDarkConstants.FLOOR_TOP + DeepDarkConstants.BLEND_THICKNESS + 8),
+						VerticalAnchor.absolute(DeepDarkConstants.FLOOR_TOP + DeepDarkConstants.BLEND_THICKNESS + 8),
+					),
 					BiomeFilter.biome()
 				)
 			)
