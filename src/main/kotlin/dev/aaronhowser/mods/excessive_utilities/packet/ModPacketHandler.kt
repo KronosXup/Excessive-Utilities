@@ -3,7 +3,6 @@ package dev.aaronhowser.mods.excessive_utilities.packet
 import dev.aaronhowser.mods.aaron.packet.AaronPacketRegistrar
 import dev.aaronhowser.mods.excessive_utilities.packet.client_to_server.UpdateControlsPacket
 import dev.aaronhowser.mods.excessive_utilities.packet.server_to_client.UpdateGridPowerPacket
-import dev.aaronhowser.mods.excessive_utilities.packet.server_to_client.UpdatePlayerWingPacket
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 
 object ModPacketHandler : AaronPacketRegistrar {
@@ -15,12 +14,6 @@ object ModPacketHandler : AaronPacketRegistrar {
 			registrar,
 			UpdateGridPowerPacket.TYPE,
 			UpdateGridPowerPacket.STREAM_CODEC
-		)
-
-		toClient(
-			registrar,
-			UpdatePlayerWingPacket.TYPE,
-			UpdatePlayerWingPacket.STREAM_CODEC
 		)
 
 		toServer(

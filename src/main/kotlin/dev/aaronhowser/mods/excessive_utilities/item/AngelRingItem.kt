@@ -7,7 +7,7 @@ import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import dev.aaronhowser.mods.excessive_utilities.config.ServerConfig
 import dev.aaronhowser.mods.excessive_utilities.handler.grid_power.GridPowerContribution
 import dev.aaronhowser.mods.excessive_utilities.handler.grid_power.GridPowerHandler
-import dev.aaronhowser.mods.excessive_utilities.packet.server_to_client.UpdatePlayerWingPacket
+import dev.aaronhowser.mods.excessive_utilities.registry.ModAttachmentTypes
 import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
 import io.netty.buffer.ByteBuf
@@ -18,17 +18,14 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
-import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.common.NeoForgeMod
-import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import top.theillusivec4.curios.api.CuriosApi
 import top.theillusivec4.curios.api.SlotContext
 import top.theillusivec4.curios.api.type.capability.ICurioItem
-import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
 class AngelRingItem(properties: Properties) : Item(properties), ICurioItem {
@@ -43,19 +40,13 @@ class AngelRingItem(properties: Properties) : Item(properties), ICurioItem {
 
 	override fun onEquip(slotContext: SlotContext, prevStack: ItemStack, stack: ItemStack) {
 		val entity = slotContext.entity()
-		if (entity is ServerPlayer) {
-			val type = stack.get(ModDataComponents.ANGEL_RING_TYPE)
-			val packet = UpdatePlayerWingPacket(entity, type)
-			packet.messageAllPlayersTrackingEntityAndSelf(entity)
-		}
+		val type = stack.getOrDefault(ModDataComponents.ANGEL_RING_TYPE, Type.INVISIBLE)
+		entity.setData(ModAttachmentTypes.WINGS, type)
 	}
 
-	override fun onUnequip(slotContext: SlotContext?, newStack: ItemStack?, stack: ItemStack?) {
-		val entity = slotContext?.entity()
-		if (entity is ServerPlayer) {
-			val packet = UpdatePlayerWingPacket(entity, null)
-			packet.messageAllPlayersTrackingEntityAndSelf(entity)
-		}
+	override fun onUnequip(slotContext: SlotContext, newStack: ItemStack, stack: ItemStack) {
+		val entity = slotContext.entity()
+		entity.removeData(ModAttachmentTypes.WINGS)
 	}
 
 	override fun canEquipFromUse(slotContext: SlotContext?, stack: ItemStack?): Boolean {
@@ -81,8 +72,6 @@ class AngelRingItem(properties: Properties) : Item(properties), ICurioItem {
 					.stacksTo(1)
 					.component(ModDataComponents.ANGEL_RING_TYPE, Type.INVISIBLE)
 			}
-
-		val PLAYER_WINGS: MutableMap<UUID, Type> = mutableMapOf()
 
 		val RING_TYPE: ResourceLocation = ExcessiveUtilities.modResource("ring_type")
 		fun hasEntityPredicate(
@@ -176,30 +165,6 @@ class AngelRingItem(properties: Properties) : Item(properties), ICurioItem {
 					flightAttribute.removeModifier(ATTRIBUTE_MODIFIER_NAME)
 				}
 			}
-		}
-
-		fun handleTrackingEvent(event: PlayerEvent.StartTracking) {
-			val target = event.target as? Player ?: return
-			val tracker = event.entity as? ServerPlayer ?: return
-
-			val wornCurios = CuriosApi.getCuriosInventory(target).getOrNull()?.equippedCurios ?: return
-			var firstRingType: Type? = null
-
-			for (slot in 0 until wornCurios.slots) {
-				val stack = wornCurios.getStackInSlot(slot)
-				if (stack.isEmpty) continue
-
-				val type = stack.get(ModDataComponents.ANGEL_RING_TYPE)
-				if (type != null) {
-					firstRingType = type
-					break
-				}
-			}
-
-			if (firstRingType == null) return
-
-			val packet = UpdatePlayerWingPacket(target, firstRingType)
-			packet.messagePlayer(tracker)
 		}
 
 	}

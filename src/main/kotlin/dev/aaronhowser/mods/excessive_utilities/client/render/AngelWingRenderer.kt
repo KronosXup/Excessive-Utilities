@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.math.Axis
 import dev.aaronhowser.mods.aaron.misc.AaronDsls.withPose
 import dev.aaronhowser.mods.excessive_utilities.item.AngelRingItem
+import dev.aaronhowser.mods.excessive_utilities.registry.ModAttachmentTypes
 import net.minecraft.client.model.EntityModel
 import net.minecraft.client.model.HumanoidModel
 import net.minecraft.client.renderer.MultiBufferSource
@@ -35,7 +36,7 @@ class AngelWingRenderer : ICurioRenderer {
 		headPitch: Float
 	) {
 		val entity = slotContext.entity
-		val wingType = AngelRingItem.PLAYER_WINGS[entity.uuid] ?: return
+		val wingType = entity.getData(ModAttachmentTypes.WINGS)
 		if (wingType == AngelRingItem.Type.INVISIBLE) return
 
 		val parentModel = renderLayerParent.model as? HumanoidModel<*> ?: return

@@ -3,6 +3,7 @@ package dev.aaronhowser.mods.excessive_utilities.registry
 import com.mojang.serialization.Codec
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import dev.aaronhowser.mods.excessive_utilities.attachment.SoulDebt
+import dev.aaronhowser.mods.excessive_utilities.item.AngelRingItem
 import net.minecraft.network.codec.ByteBufCodecs
 import net.neoforged.neoforge.attachment.AttachmentType
 import net.neoforged.neoforge.registries.DeferredHolder
@@ -33,6 +34,15 @@ object ModAttachmentTypes {
 				.builder(Supplier { false })
 				.serialize(Codec.BOOL)
 				.sync(ByteBufCodecs.BOOL)
+				.build()
+		)
+
+	val WINGS: DeferredHolder<AttachmentType<*>, AttachmentType<AngelRingItem.Type>> =
+		register(
+			"wings",
+			AttachmentType
+				.builder(Supplier { AngelRingItem.Type.INVISIBLE })
+				.sync(AngelRingItem.Type.STREAM_CODEC)
 				.build()
 		)
 

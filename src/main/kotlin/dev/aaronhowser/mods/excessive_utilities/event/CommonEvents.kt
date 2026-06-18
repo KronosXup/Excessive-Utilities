@@ -14,7 +14,6 @@ import dev.aaronhowser.mods.excessive_utilities.command.ModCommands
 import dev.aaronhowser.mods.excessive_utilities.config.ServerConfig
 import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.ModDamageTypeProvider
 import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.DeepDarkConstants
-import dev.aaronhowser.mods.excessive_utilities.datagen.datapack.worldgen.ModDimensionTypes
 import dev.aaronhowser.mods.excessive_utilities.datagen.tag.ModItemTagsProvider
 import dev.aaronhowser.mods.excessive_utilities.datamap.InversionRitualEnemyWeight
 import dev.aaronhowser.mods.excessive_utilities.datamap.NetherLavaDunkConversion
@@ -400,11 +399,6 @@ object CommonEvents {
 	@SubscribeEvent
 	fun onItemCrafted(event: PlayerEvent.ItemCraftedEvent) {
 		UnstableIngotItem.handleCraftEvent(event)
-	}
-
-	@SubscribeEvent
-	fun onStartTracking(event: PlayerEvent.StartTracking) {
-		AngelRingItem.handleTrackingEvent(event)
 	}
 
 	@SubscribeEvent

@@ -7,7 +7,12 @@
 	- Vanilla ores spawn more densely
 	- Added some vanilla Deep Dark stuff as well
 		- Veins of Sculk permeate the dimension
-        - Ancient Cities can spawn rarely
+		- Ancient Cities can spawn rarely
+
+### Changed
+
+- Which Angel Ring wing you have is now a Data Attachment
+	- It was previously a packet that modified a static `Map<UUID, Type>` which is gross
 
 # 1.6.0
 
