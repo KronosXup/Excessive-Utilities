@@ -11,8 +11,8 @@
 - Kikoku
 	- Deals 2 Soul Rending
 		- Soul Rending is a new attribute that lowers the max health of anything you attack
-        - Currently only used by the Kikoku, but since it's an Attribute, anything can use it
-        - The Soul Rent attribute modifier on max health decreases over time
+		- Currently only used by the Kikoku, but since it's an Attribute, anything can use it
+		- The Soul Rent attribute modifier on max health decreases over time
 
 ### Changed
 
@@ -27,7 +27,6 @@
 - The Ender Quarry's beam renders while the EQ itself is off-screen now
 
 # 1.6.0
-
 
 ### Changed
 
@@ -55,7 +54,6 @@
 
 # 1.5.0
 
-
 ### Changed
 
 - Crusher recipes now have more options:
@@ -75,7 +73,6 @@
 - Drums now properly display the color of their held fluid
 
 # 1.4.0
-
 
 ### Changed
 
@@ -114,6 +111,9 @@
 	- `#flowers`
 	- `#replaceable_by_trees`
 - Added a failsafe for leaving The Last Millennium if you don't have the return data in your persistent data
+- Added recipes for the Creative Builder's Wand and Creative Destruction Wand
+- Unstable Ingot recipes can now require if the ingot is stable or not
+	- The Unstable Ingot Block and the two Creative Wands require it
 
 ### Fixed
 
