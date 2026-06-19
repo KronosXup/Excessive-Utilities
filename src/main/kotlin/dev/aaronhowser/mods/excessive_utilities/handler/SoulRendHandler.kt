@@ -1,6 +1,6 @@
 package dev.aaronhowser.mods.excessive_utilities.handler
 
-import dev.aaronhowser.mods.aaron.misc.AaronExtensions.tell
+import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isClientSide
 import dev.aaronhowser.mods.excessive_utilities.ExcessiveUtilities
 import dev.aaronhowser.mods.excessive_utilities.item.tier.OpiniumTier
 import dev.aaronhowser.mods.excessive_utilities.registry.ModAttributes
@@ -8,6 +8,7 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EquipmentSlotGroup
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
@@ -68,6 +69,32 @@ object SoulRendHandler {
 		}
 
 		spawnSoulParticles(victim)
+	}
+
+	fun lowerSoulRend(entity: Entity) {
+		if (entity !is LivingEntity
+			|| entity.isClientSide
+			|| entity.tickCount % 60 != 0
+		) return
+
+		val maxHealthAttribute = entity.getAttribute(Attributes.MAX_HEALTH) ?: return
+
+		val currentModifier = maxHealthAttribute.getModifier(SOUL_RENT_HEALTH) ?: return
+		val currentAmount = currentModifier.amount
+		val nextAmount = currentAmount + 1
+
+		if (nextAmount >= 0.0) {
+			maxHealthAttribute.removeModifier(SOUL_RENT_HEALTH)
+			return
+		}
+
+		maxHealthAttribute.addOrUpdateTransientModifier(
+			AttributeModifier(
+				SOUL_RENT_HEALTH,
+				nextAmount,
+				AttributeModifier.Operation.ADD_VALUE
+			)
+		)
 	}
 
 	private fun spawnSoulParticles(victim: LivingEntity) {
