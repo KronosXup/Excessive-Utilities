@@ -122,7 +122,6 @@ class ModJeiPlugin : IModPlugin {
 		registration.registerSubtypeInterpreter(ModItems.ANGEL_RING.get(), AngelRingSubtypeInterpreter)
 		registration.registerSubtypeInterpreter(ModItems.GOLDEN_LASSO.get(), LassoSubtypeInterpreter)
 		registration.registerSubtypeInterpreter(ModItems.CURSED_LASSO.get(), LassoSubtypeInterpreter)
-		registration.registerSubtypeInterpreter(ModItems.UNSTABLE_INGOT.get(), UnstableIngotSubtypeInterpreter)
 	}
 
 	companion object {

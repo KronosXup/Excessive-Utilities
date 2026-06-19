@@ -5,6 +5,7 @@ import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter
 import mezz.jei.api.ingredients.subtypes.UidContext
 import net.minecraft.world.item.ItemStack
 
+// Purposely unused
 object UnstableIngotSubtypeInterpreter : ISubtypeInterpreter<ItemStack> {
 
 	override fun getSubtypeData(ingredient: ItemStack, context: UidContext): Any? {
