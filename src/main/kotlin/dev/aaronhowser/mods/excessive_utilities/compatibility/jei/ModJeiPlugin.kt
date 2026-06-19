@@ -9,6 +9,7 @@ import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.category.QedJe
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.category.ResonatorJeiCategory
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.category.generator_fuel.*
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.extension.ShapedRecipeExtension
+import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.extension.ShapedUnstableRecipeExtension
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.subtype.AngelRingSubtypeInterpreter
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.subtype.DivisionCoreSubtypeInterpreter
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.subtype.LassoSubtypeInterpreter
@@ -112,7 +113,7 @@ class ModJeiPlugin : IModPlugin {
 
 		craftingCategory.addExtension(KeepPaintbrushRecipe::class.java, ShapedRecipeExtension())
 		craftingCategory.addExtension(ShapedDivisionRecipe::class.java, ShapedRecipeExtension())
-		craftingCategory.addExtension(ShapedUnstableRecipe::class.java, ShapedRecipeExtension())
+		craftingCategory.addExtension(ShapedUnstableRecipe::class.java, ShapedUnstableRecipeExtension())
 		craftingCategory.addExtension(DamageGlassCutterRecipe::class.java, ShapedRecipeExtension())
 		craftingCategory.addExtension(SnowGlobeRecipe::class.java, ShapedRecipeExtension())
 	}
