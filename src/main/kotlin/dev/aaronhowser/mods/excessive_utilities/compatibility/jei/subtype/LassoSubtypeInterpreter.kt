@@ -13,7 +13,7 @@ object LassoSubtypeInterpreter : ISubtypeInterpreter<ItemStack> {
 
 	@Deprecated("Deprecated in Java")
 	override fun getLegacyStringSubtypeInfo(ingredient: ItemStack, context: UidContext): String {
-		val remainingUses = ingredient.get(ModDataComponents.ENTITY_TYPE) ?: return ""
-		return remainingUses.toString()
+		val entityType = ingredient.get(ModDataComponents.ENTITY_TYPE) ?: return ""
+		return entityType.toString()
 	}
 }

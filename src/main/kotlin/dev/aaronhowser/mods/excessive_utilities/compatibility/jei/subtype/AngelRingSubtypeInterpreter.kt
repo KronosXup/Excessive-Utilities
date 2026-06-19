@@ -13,7 +13,7 @@ object AngelRingSubtypeInterpreter : ISubtypeInterpreter<ItemStack> {
 
 	@Deprecated("Deprecated in Java")
 	override fun getLegacyStringSubtypeInfo(ingredient: ItemStack, context: UidContext): String {
-		val remainingUses = ingredient.get(ModDataComponents.ANGEL_RING_TYPE) ?: return ""
-		return remainingUses.toString()
+		val type = ingredient.get(ModDataComponents.ANGEL_RING_TYPE) ?: return ""
+		return type.toString()
 	}
 }

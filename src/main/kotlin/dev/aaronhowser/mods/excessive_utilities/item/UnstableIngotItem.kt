@@ -65,8 +65,11 @@ class UnstableIngotItem(properties: Properties) : Item(properties) {
 	}
 
 	override fun getName(stack: ItemStack): Component {
-		if (stack.has(ModDataComponents.COUNTDOWN)) return super.getName(stack)
-		return ModItemLang.MOBIUS_INGOT.toComponent()
+		return if (isStable(stack)) {
+			ModItemLang.MOBIUS_INGOT.toComponent()
+		} else {
+			super.getName(stack)
+		}
 	}
 
 	override fun appendHoverText(
@@ -123,6 +126,15 @@ class UnstableIngotItem(properties: Properties) : Item(properties) {
 
 		fun isCheesed(stack: ItemStack): Boolean {
 			return stack.has(ModDataComponents.COUNTDOWN) && !stack.has(ModDataComponents.CRAFTED_IN_MENU)
+		}
+
+		fun isStable(stack: ItemStack): Boolean {
+			return !stack.has(ModDataComponents.COUNTDOWN)
+		}
+
+		fun isUnstableAndCountingDown(stack: ItemStack): Boolean {
+			val countdown = stack.get(ModDataComponents.COUNTDOWN) ?: return false
+			return countdown > 0 && stack.has(ModDataComponents.CRAFTED_IN_MENU)
 		}
 
 		fun handleCraftEvent(event: PlayerEvent.ItemCraftedEvent) {

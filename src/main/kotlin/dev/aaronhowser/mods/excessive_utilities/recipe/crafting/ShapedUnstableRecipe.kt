@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import dev.aaronhowser.mods.aaron.misc.AaronExtensions.isItem
 import dev.aaronhowser.mods.aaron.serialization.AaronExtraStreamCodecs
 import dev.aaronhowser.mods.excessive_utilities.item.UnstableIngotItem
-import dev.aaronhowser.mods.excessive_utilities.registry.ModDataComponents
 import dev.aaronhowser.mods.excessive_utilities.registry.ModItems
 import dev.aaronhowser.mods.excessive_utilities.registry.ModRecipeSerializers
 import io.netty.buffer.ByteBuf
@@ -76,9 +75,9 @@ class ShapedUnstableRecipe(
 
 		fun accepts(stack: ItemStack): Boolean {
 			return when (this) {
-				STABLE -> isStable(stack)
-				UNSTABLE -> isUnstableAndCountingDown(stack)
-				EITHER -> true
+				STABLE -> UnstableIngotItem.isStable(stack)
+				UNSTABLE -> UnstableIngotItem.isUnstableAndCountingDown(stack)
+				EITHER -> !UnstableIngotItem.isCheesed(stack)
 			}
 		}
 
@@ -89,15 +88,6 @@ class ShapedUnstableRecipe(
 		companion object {
 			val CODEC: StringRepresentable.EnumCodec<Stability> = StringRepresentable.fromEnum { entries.toTypedArray() }
 			val STREAM_CODEC: StreamCodec<ByteBuf, Stability> = AaronExtraStreamCodecs.enumStreamCodec(Stability::class.java)
-
-			private fun isStable(stack: ItemStack): Boolean {
-				return !stack.has(ModDataComponents.COUNTDOWN)
-			}
-
-			private fun isUnstableAndCountingDown(stack: ItemStack): Boolean {
-				val countdown = stack.get(ModDataComponents.COUNTDOWN) ?: return false
-				return countdown > 0 && stack.has(ModDataComponents.CRAFTED_IN_MENU)
-			}
 		}
 	}
 

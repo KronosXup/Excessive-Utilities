@@ -14,6 +14,7 @@ import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.subtype.AngelR
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.subtype.DivisionCoreSubtypeInterpreter
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.subtype.LassoSubtypeInterpreter
 import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.subtype.OpiniumCoreSubtypeInterpreter
+import dev.aaronhowser.mods.excessive_utilities.compatibility.jei.subtype.UnstableIngotSubtypeInterpreter
 import dev.aaronhowser.mods.excessive_utilities.recipe.crafting.*
 import dev.aaronhowser.mods.excessive_utilities.recipe.machine.CrusherRecipe
 import dev.aaronhowser.mods.excessive_utilities.recipe.machine.EnchanterRecipe
@@ -118,13 +119,13 @@ class ModJeiPlugin : IModPlugin {
 		craftingCategory.addExtension(SnowGlobeRecipe::class.java, ShapedRecipeExtension())
 	}
 
-	//FIXME: For some reason I can't see higher-tier Opinium Core recipes?
 	override fun registerItemSubtypes(registration: ISubtypeRegistration) {
 		registration.registerSubtypeInterpreter(ModItems.OPINIUM_CORE.get(), OpiniumCoreSubtypeInterpreter)
 		registration.registerSubtypeInterpreter(ModItems.DIVISION_SIGIL.get(), DivisionCoreSubtypeInterpreter)
 		registration.registerSubtypeInterpreter(ModItems.ANGEL_RING.get(), AngelRingSubtypeInterpreter)
 		registration.registerSubtypeInterpreter(ModItems.GOLDEN_LASSO.get(), LassoSubtypeInterpreter)
 		registration.registerSubtypeInterpreter(ModItems.CURSED_LASSO.get(), LassoSubtypeInterpreter)
+		registration.registerSubtypeInterpreter(ModItems.UNSTABLE_INGOT.get(), UnstableIngotSubtypeInterpreter)
 	}
 
 	companion object {
