@@ -99,17 +99,10 @@ class TesseractBEWLR : BlockEntityWithoutLevelRenderer(
 
 						// 0.5 = it hit the other side
 
-						in 0.5f..0.75f -> {
-							val growProgress = Mth.inverseLerp(loopProgress, 0.5f, 0.75f)
-							Mth.lerp(growProgress, 0.75f, 1f)
+						else -> {
+							val arcProgress = Mth.inverseLerp(loopProgress, 0.5f, 1f)
+							Mth.lerp(sin(arcProgress * Math.PI).toFloat(), 0.75f, 1f)
 						}
-
-						in 0.75f..1f -> {
-							val shrinkProgress = Mth.inverseLerp(loopProgress, 0.75f, 1f)
-							Mth.lerp(shrinkProgress, 1f, 0.75f)
-						}
-
-						else -> 1f
 					}
 
 					add(Square(0.5f * scale, dz - 0.5f - 2, colors[i]))
