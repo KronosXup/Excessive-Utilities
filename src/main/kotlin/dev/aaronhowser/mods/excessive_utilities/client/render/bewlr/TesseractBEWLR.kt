@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.math.Axis
 import dev.aaronhowser.mods.aaron.client.AaronClientUtil
+import dev.aaronhowser.mods.aaron.client.render.AaronRenderTypes
 import dev.aaronhowser.mods.aaron.misc.AaronDsls.withPose
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer
@@ -30,7 +31,7 @@ class TesseractBEWLR : BlockEntityWithoutLevelRenderer(
 	) {
 		val gameTime = AaronClientUtil.localLevel?.gameTime ?: 0
 		val time = gameTime + Minecraft.getInstance().timer.gameTimeDeltaTicks
-		val vertexConsumer = buffer.getBuffer(RenderType.lines())
+		val vertexConsumer = buffer.getBuffer(AaronRenderTypes.linesThroughWalls())
 
 		poseStack.withPose {
 			poseStack.translate(0.5, 0.5, 0.5)
