@@ -13,6 +13,9 @@
 		- Soul Rending is a new attribute that lowers the max health of anything you attack
 		- Currently only used by the Kikoku, but since it's an Attribute, anything can use it
 		- The Soul Rent attribute modifier on max health decreases over time
+- The Tesseract
+	- Replacing the Klein Bottle
+    - The Klein Bottle was RWTema flexing his modeling abilities. I can't model, but I _can_ do fancy math
 
 ### Changed
 
