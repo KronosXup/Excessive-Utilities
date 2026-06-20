@@ -59,18 +59,6 @@ class TesseractBEWLR : BlockEntityWithoutLevelRenderer(
 
 			val speed = 0.025
 
-			val colors = listOf(
-				0xFFFFFF,
-				0xFF0000,
-				0x00FF00,
-				0x0000FF,
-				0x00FFFF,
-				0xFF00FF,
-				0xFFFF00,
-				0xF0F0F0,
-				0x0F0F0F
-			)
-
 			val squares = buildList {
 				for (i in 0 until amountSquares) {
 					val phaseOffset = phaseStep * i
@@ -106,7 +94,13 @@ class TesseractBEWLR : BlockEntityWithoutLevelRenderer(
 						}
 					}
 
-					add(Square(0.5f * scale, dz - 0.5f - 2, colors[i]))
+					val color = if (i < amountSquares / 2) {
+						0xFF8800
+					} else {
+						0x0088FF
+					}
+
+					add(Square(0.5f * scale, dz - 0.5f - 2, color))
 				}
 			}
 
